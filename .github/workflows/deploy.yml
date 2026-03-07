@@ -61,6 +61,7 @@ jobs:
               with:
                   resourceGroup: ${{ env.RESOURCE_GROUP }}
                   containerAppName: ${{ env.BACKEND_APP_NAME }}
+                  acrName: ${{ env.REGISTRY_NAME }}
                   imageToDeploy: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
 
             - name: Deploy Frontend to Container App
@@ -68,4 +69,5 @@ jobs:
               with:
                   resourceGroup: ${{ env.RESOURCE_GROUP }}
                   containerAppName: ${{ env.FRONTEND_APP_NAME }}
+                  acrName: ${{ env.REGISTRY_NAME }}
                   imageToDeploy: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
