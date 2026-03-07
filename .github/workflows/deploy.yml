@@ -61,16 +61,22 @@ jobs:
               with:
                   resourceGroup: ${{ env.RESOURCE_GROUP }}
                   containerAppName: ${{ env.BACKEND_APP_NAME }}
+                  containerAppEnvironment: managed-env-uae
                   acrName: ${{ env.REGISTRY_NAME }}
                   imageToDeploy: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
                   targetPort: 5000
                   ingress: external
+                  environmentVariables: |
+                      DB_URL=jdbc:postgresql://localhost:5432/placeholder
+                      JWT_SECRET=placeholder_secret_key_for_initial_deployment
+                      TMDB_API_KEY=placeholder_key
 
             - name: Deploy Frontend to Container App
               uses: azure/container-apps-deploy-action@v1
               with:
                   resourceGroup: ${{ env.RESOURCE_GROUP }}
                   containerAppName: ${{ env.FRONTEND_APP_NAME }}
+                  containerAppEnvironment: managed-env-uae
                   acrName: ${{ env.REGISTRY_NAME }}
                   imageToDeploy: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
                   targetPort: 80
