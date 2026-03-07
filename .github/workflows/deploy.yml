@@ -63,6 +63,8 @@ jobs:
                   containerAppName: ${{ env.BACKEND_APP_NAME }}
                   acrName: ${{ env.REGISTRY_NAME }}
                   imageToDeploy: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.BACKEND_IMAGE_NAME }}:${{ github.sha }}
+                  targetPort: 5000
+                  ingress: external
 
             - name: Deploy Frontend to Container App
               uses: azure/container-apps-deploy-action@v1
@@ -71,3 +73,5 @@ jobs:
                   containerAppName: ${{ env.FRONTEND_APP_NAME }}
                   acrName: ${{ env.REGISTRY_NAME }}
                   imageToDeploy: ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.FRONTEND_IMAGE_NAME }}:${{ github.sha }}
+                  targetPort: 80
+                  ingress: external
