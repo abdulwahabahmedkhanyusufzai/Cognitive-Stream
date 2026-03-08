@@ -1,55 +1,70 @@
-<div class="relative h-screen text-white">
+<div class="relative h-screen text-white overflow-hidden flex flex-col">
     <app-navbar></app-navbar>
 
-    <!-- COOL OPTIMIZATION HACK FOR IMAGES -->
+    <!-- LOADING SHIMMER -->
     <div *ngIf="imgLoading() && trendingContent()"
-        class="absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center shimmer -z-10">
+        class="absolute inset-0 bg-nebula-dark flex items-center justify-center -z-10">
+        <div class="w-20 h-20 border-4 border-nebula-violet/20 border-t-nebula-cyan rounded-full animate-spin"></div>
     </div>
 
-    <img *ngIf="trendingContent()" [src]="ORIGINAL_IMG_BASE_URL + trendingContent()?.backdrop_path" alt="Hero img"
-        class="absolute top-0 left-0 w-full h-full object-cover -z-50" (load)="imgLoading.set(false)" />
+    <!-- HERO BACKGROUND -->
+    <div class="absolute inset-0 -z-50">
+        <img *ngIf="trendingContent()" [src]="ORIGINAL_IMG_BASE_URL + trendingContent()?.backdrop_path"
+            alt="Hero backdrop" class="w-full h-full object-cover transition-opacity duration-1000"
+            [class.opacity-0]="imgLoading()" (load)="imgLoading.set(false)" />
+        <div class="absolute inset-0 bg-gradient-to-r from-nebula-dark via-nebula-dark/40 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-nebula-dark via-transparent to-nebula-dark/20"></div>
+    </div>
 
-    <div class="absolute top-0 left-0 w-full h-full bg-black/50 -z-50" aria-hidden="true"></div>
+    <!-- HERO CONTENT -->
+    <div class="flex-grow flex flex-col justify-center px-8 md:px-16 lg:px-24 z-10">
+        <div class="max-w-3xl space-y-6" *ngIf="trendingContent()">
+            <div
+                class="inline-flex items-center space-x-3 px-3 py-1 bg-white/5 backdrop-blur-md border border-white/10 rounded-lg">
+                <span class="text-xs font-black uppercase tracking-[0.2em] text-nebula-cyan">Trending
+                    Transmission</span>
+            </div>
 
-    <div class="absolute top-0 left-0 w-full h-full flex flex-col justify-center px-8 md:px-16 lg:px-32">
-        <div
-            class="bg-gradient-to-b from-black via-transparent to-transparent absolute w-full h-full top-0 left-0 -z-10">
-        </div>
-
-        <div class="max-w-2xl" *ngIf="trendingContent()">
-            <h1 class="mt-4 text-6xl font-extrabold text-balance">
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] drop-shadow-2xl">
                 {{ trendingContent()?.title || trendingContent()?.name }}
             </h1>
-            <p class="mt-2 text-lg">
-                {{ (trendingContent()?.release_date?.split("-")[0] || trendingContent()?.first_air_date?.split("-")[0])
-                }}
-                | {{ trendingContent()?.adult ? "18+" : "PG-13" }}
-            </p>
 
-            <p class="mt-4 text-lg">
-                {{ trendingContent()?.overview.length > 200
-                ? (trendingContent()?.overview | slice:0:200) + "..."
+            <div class="flex items-center space-x-4 text-sm font-bold text-gray-400">
+                <span class="px-2 py-1 bg-nebula-violet/20 text-nebula-violet rounded border border-nebula-violet/30">
+                    {{ trendingContent()?.adult ? "RESTRICTED" : "OPEN ACCESS" }}
+                </span>
+                <span>{{ (trendingContent()?.release_date?.split("-")[0] ||
+                    trendingContent()?.first_air_date?.split("-")[0]) }}</span>
+                <span class="w-1.5 h-1.5 bg-gray-600 rounded-full"></span>
+                <span>NEURAL RANK: {{(trendingContent()?.vote_average * 10).toFixed(0)}}%</span>
+            </div>
+
+            <p class="text-lg md:text-xl text-gray-300 max-w-xl leading-relaxed drop-shadow-md">
+                {{ trendingContent()?.overview.length > 250
+                ? (trendingContent()?.overview | slice:0:250) + "..."
                 : trendingContent()?.overview }}
             </p>
-        </div>
 
-        <div class="flex mt-8" *ngIf="trendingContent()">
-            <a [routerLink]="['/watch', trendingContent()?.id]"
-                class="bg-white hover:bg-white/80 text-black font-bold py-2 px-4 rounded mr-4 flex items-center">
-                <lucide-icon name="play" class="size-6 mr-2 fill-black"></lucide-icon>
-                Play
-            </a>
+            <div class="flex items-center space-x-6 pt-4">
+                <a [routerLink]="['/watch', trendingContent()?.id]"
+                    class="group flex items-center space-x-3 bg-white text-nebula-dark font-black px-8 py-4 rounded-2xl hover:bg-nebula-cyan hover:scale-105 transition-all shadow-xl shadow-white/5">
+                    <lucide-icon name="play"
+                        class="size-6 fill-nebula-dark group-hover:fill-nebula-dark transition-colors"></lucide-icon>
+                    <span>INITIALIZE STREAM</span>
+                </a>
 
-            <a [routerLink]="['/watch', trendingContent()?.id]"
-                class="bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded flex items-center">
-                <lucide-icon name="info" class="size-6 mr-2"></lucide-icon>
-                More Info
-            </a>
+                <a [routerLink]="['/watch', trendingContent()?.id]"
+                    class="flex items-center space-x-3 bg-white/5 backdrop-blur-xl text-white border border-white/10 font-bold px-8 py-4 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all">
+                    <lucide-icon name="info" class="size-6"></lucide-icon>
+                    <span>SIGNAL DATA</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="flex flex-col gap-10 bg-black py-10">
+<!-- DATA SECTORS (SLIDERS) -->
+<div class="flex flex-col gap-24 bg-nebula-dark pb-32 pt-10">
     @if (contentService.contentType() === 'movie') {
     @for (category of MOVIE_CATEGORIES; track category) {
     <app-movie-slider [category]="category"></app-movie-slider>
