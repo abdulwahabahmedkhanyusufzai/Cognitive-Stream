@@ -24,6 +24,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequest request, HttpServletResponse response) {
+        log.info("Signup request received for user: {}", request.getEmail());
         AuthResponse authResponse = authService.signup(request);
         setCookie(response, authResponse.getToken());
         return ResponseEntity.ok(authResponse);
@@ -31,6 +32,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request, HttpServletResponse response) {
+        log.info("Login request received for user: {}", request.getEmail());
         AuthResponse authResponse = authService.login(request);
         setCookie(response, authResponse.getToken());
         return ResponseEntity.ok(authResponse);
