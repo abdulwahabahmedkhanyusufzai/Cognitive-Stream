@@ -4,15 +4,16 @@ import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+import { VideoPlayerComponent } from '../../components/video-player/video-player.component';
 import { ContentService } from '../../services/content.service';
-import { LucideAngularModule, ChevronLeft, ChevronRight, LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
+import { LucideAngularModule, ChevronLeft, ChevronRight, AlertCircle, LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
 import { ORIGINAL_IMG_BASE_URL, SMALL_IMG_BASE_URL } from '../../constants';
 
 @Component({
     selector: 'app-watch-page',
     standalone: true,
-    imports: [CommonModule, RouterLink, RouterLinkActive, NavbarComponent, LucideAngularModule],
-    providers: [{ provide: LUCIDE_ICONS, useValue: new LucideIconProvider({ ChevronLeft, ChevronRight }) }],
+    imports: [CommonModule, RouterLink, RouterLinkActive, NavbarComponent, LucideAngularModule, VideoPlayerComponent],
+    providers: [{ provide: LUCIDE_ICONS, useValue: new LucideIconProvider({ ChevronLeft, ChevronRight, AlertCircle }) }],
     templateUrl: './watch-page.component.html'
 })
 export class WatchPageComponent implements OnInit {
@@ -29,12 +30,14 @@ export class WatchPageComponent implements OnInit {
     loading = signal(true);
     content = signal<any>(null);
     similarContent = signal<any[]>([]);
+    streamUrl = signal<string | null>(null);
+    useTrailer = signal(false);
 
     ORIGINAL_IMG_BASE_URL = ORIGINAL_IMG_BASE_URL;
     SMALL_IMG_BASE_URL = SMALL_IMG_BASE_URL;
 
     ngOnInit() {
-        this.route.paramMap.subscribe(params => {
+        this.route.paramMap.subscribe((params: any) => {
             const id = params.get('id');
             this.id.set(id);
             if (id) {
@@ -74,6 +77,17 @@ export class WatchPageComponent implements OnInit {
                     this.loading.set(false);
                 }
             });
+
+        // HLS Stream from CDN
+        this.http.get<{ url: string }>(`/api/v1/stream/${type}/${id}`)
+            .subscribe({
+                next: (res: { url: string }) => this.streamUrl.set(res.url),
+                error: () => this.streamUrl.set(null)
+            });
+    }
+
+    toggleSource() {
+        this.useTrailer.update((v: boolean) => !v);
     }
 
     getSafeUrl(key: string): SafeResourceUrl {
@@ -82,13 +96,13 @@ export class WatchPageComponent implements OnInit {
 
     handleNext() {
         if (this.currentTrailerIdx() < this.trailers().length - 1) {
-            this.currentTrailerIdx.update(v => v + 1);
+            this.currentTrailerIdx.update((v: number) => v + 1);
         }
     }
 
     handlePrev() {
         if (this.currentTrailerIdx() > 0) {
-            this.currentTrailerIdx.update(v => v - 1);
+            this.currentTrailerIdx.update((v: number) => v - 1);
         }
     }
 

@@ -50,6 +50,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
+        // 3. Fallback to query parameter 'token' (Useful for HLS segments)
+        if (jwt == null) {
+            jwt = request.getParameter("token");
+        }
+
         // 3. Process token
         if (jwt != null) {
             try {

@@ -57,8 +57,10 @@
 
         <!-- Cinematic Display -->
         <div
-            class="relative rounded-[40px] overflow-hidden bg-black border border-white/5 aspect-video mb-24 shadow-2xl">
-            @if (trailers().length > 0) {
+            class="relative rounded-[40px] overflow-hidden bg-black border border-white/5 aspect-video mb-12 shadow-2xl group/player">
+            @if (streamUrl() && !useTrailer()) {
+            <app-video-player [src]="streamUrl()!"></app-video-player>
+            } @else if (trailers().length > 0) {
             <iframe [src]="getSafeUrl(trailers()[currentTrailerIdx()].key)" class="w-full h-full" frameborder="0"
                 allowfullscreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
@@ -68,6 +70,14 @@
                 <lucide-icon name="alert-circle" class="size-12"></lucide-icon>
                 <p class="text-xs font-bold uppercase tracking-widest">No Visual Data</p>
             </div>
+            }
+
+            <!-- Source Toggle -->
+            @if (streamUrl() && trailers().length > 0) {
+            <button (click)="toggleSource()"
+                class="absolute top-8 right-8 px-6 py-3 bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all opacity-0 group-hover/player:opacity-100">
+                {{ useTrailer() ? 'Switch to Movie' : 'Watch Trailer' }}
+            </button>
             }
         </div>
 
