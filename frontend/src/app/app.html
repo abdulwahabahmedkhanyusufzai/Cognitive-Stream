@@ -1,5 +1,18 @@
+<!-- Global Background Glows -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+  <div
+    class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-nebula-violet/[0.03] blur-[120px] rounded-full animate-float">
+  </div>
+  <div
+    class="absolute bottom-[20%] -right-[10%] w-[40%] h-[40%] bg-nebula-cyan/[0.02] blur-[100px] rounded-full animate-pulse-slow">
+  </div>
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-nebula-violet/[0.015] blur-[160px] rounded-full pointer-events-none">
+  </div>
+</div>
+
 <div *ngIf="authService.isCheckingAuth(); else content"
-  class="h-screen bg-nebula-dark flex items-center justify-center">
+  class="h-screen flex items-center justify-center bg-nebula-dark">
   <lucide-icon name="loader" class="animate-spin text-nebula-violet size-10"></lucide-icon>
 </div>
 

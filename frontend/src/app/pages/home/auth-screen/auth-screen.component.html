@@ -1,4 +1,15 @@
 <div class="hero-bg relative min-h-screen flex flex-col font-sans text-white overflow-x-hidden">
+    <!-- Background Glow System -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+        <div
+            class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-nebula-violet/10 blur-[120px] rounded-full animate-float">
+        </div>
+        <div
+            class="absolute top-[20%] -right-[10%] w-[40%] h-[40%] bg-nebula-cyan/5 blur-[100px] rounded-full animate-pulse-slow">
+        </div>
+        <div class="absolute -bottom-[10%] left-[20%] w-[35%] h-[35%] bg-nebula-violet/5 blur-[100px] rounded-full animate-float"
+            style="animation-duration: 25s; animation-delay: -5s;"></div>
+    </div>
     <!-- Navbar -->
     <header class="max-w-7xl mx-auto w-full flex items-center justify-between p-8 z-50">
         <div class="flex items-center space-x-3">
