@@ -1,139 +1,97 @@
-<div class="hero-bg relative">
+<div class="hero-bg relative min-h-screen flex flex-col font-sans text-white overflow-x-hidden">
     <!-- Navbar -->
-    <header class="max-w-6xl mx-auto flex items-center justify-between p-4 pb-10">
-        <img src="/netflix-logo.png" alt="Netflix Logo" class="w-32 md:w-52" />
-        <a routerLink="/login" class="text-white bg-red-600 py-1 px-2 rounded">
-            Sign In
+    <header class="max-w-7xl mx-auto w-full flex items-center justify-between p-6 z-50">
+        <div class="flex items-center space-x-3 group">
+            <div
+                class="w-12 h-12 bg-gradient-to-br from-nebula-violet to-nebula-cyan rounded-2xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+                <span class="text-white font-black text-2xl">C</span>
+            </div>
+            <div class="flex flex-col leading-tight">
+                <span class="text-white font-black text-2xl tracking-tighter">COGNITIVE</span>
+                <span class="text-nebula-cyan font-bold text-xs tracking-[0.3em]">STREAMING LABS</span>
+            </div>
+        </div>
+        <a routerLink="/login"
+            class="px-8 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg">
+            Access Terminal
         </a>
     </header>
 
-    <!-- hero section -->
-    <div class="flex flex-col items-center justify-center text-center py-40 text-white max-w-6xl mx-auto">
-        <h1 class="text-4xl md:text-6xl font-bold mb-4">Unlimited movies, TV shows, and more</h1>
-        <p class="text-lg mb-4">Watch anywhere. Cancel anytime.</p>
-        <p class="mb-4">Ready to watch? Enter your email to create or restart your membership.</p>
+    <!-- Hero Section -->
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 pt-20 pb-40 z-10 relative">
+        <div
+            class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-nebula-violet/20 blur-[120px] rounded-full -z-10 animate-pulse">
+        </div>
 
-        <form class="flex flex-col md:flex-row gap-4 w-1/2" (submit)="handleFormSubmit($event)">
-            <input type="email" placeholder="Email address"
-                class="p-2 rounded flex-1 bg-black/80 border border-gray-700" [ngModel]="email()"
-                (ngModelChange)="email.set($event)" name="email" />
+        <div
+            class="inline-flex items-center space-x-2 px-4 py-2 bg-nebula-violet/20 border border-nebula-violet/30 rounded-full mb-8 backdrop-blur-md">
+            <span class="w-2 h-2 bg-nebula-cyan rounded-full animate-ping"></span>
+            <span class="text-nebula-cyan text-xs font-bold uppercase tracking-widest">New Universe Detected</span>
+        </div>
+
+        <h1
+            class="text-5xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tight max-w-5xl bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/40">
+            Limitless Content.<br />
+            Engineered for <span class="text-nebula-cyan">Discovery.</span>
+        </h1>
+
+        <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl leading-relaxed">
+            Experience a cinematic ecosystem where every frame is a stream of pure data. No boundaries. Infinite
+            possibilities.
+        </p>
+
+        <form
+            class="flex flex-col md:flex-row gap-4 w-full max-w-lg p-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl"
+            (submit)="handleFormSubmit($event)">
+            <input type="email" placeholder="Enter your data handle (email)"
+                class="px-6 py-4 rounded-2xl flex-1 bg-transparent border-none text-white focus:outline-none placeholder-gray-500"
+                [ngModel]="email()" (ngModelChange)="email.set($event)" name="email" />
             <button
-                class="bg-red-600 text-xl lg:text-2xl px-2 lg:px-6 py-1 md:py-2 rounded flex justify-center items-center">
-                Get Started
-                <lucide-icon name="chevron-right" class="size-8 md:size-10"></lucide-icon>
+                class="bg-gradient-to-r from-nebula-violet to-nebula-blue text-white font-black px-10 py-4 rounded-2xl flex justify-center items-center shadow-lg shadow-nebula-violet/40 hover:scale-[1.05] active:scale-[0.95] transition-all">
+                Initialize
+                <lucide-icon name="arrow-right" class="size-5 ml-3"></lucide-icon>
             </button>
         </form>
-    </div>
+    </main>
 
-    <!-- separator -->
-    <div class="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
-
-    <!-- 1st section -->
-    <div class="py-10 bg-black text-white">
-        <div class="flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col px-4 md:px-2">
-            <!-- left side -->
-            <div class="flex-1 text-center md:text-left">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Enjoy on your TV</h2>
-                <p class="text-lg md:text-xl">
-                    Watch on Smart TVs, PlayStation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.
+    <!-- Featured Section -->
+    <section class="py-32 bg-nebula-dark/80 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-20">
+            <div class="flex-1 space-y-8">
+                <div class="w-16 h-1 bg-nebula-cyan rounded-full"></div>
+                <h2 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">
+                    Multi-Device <br />
+                    <span class="text-gray-500">Synchronization.</span>
+                </h2>
+                <p class="text-xl text-gray-400 leading-relaxed max-w-lg">
+                    Seamlessly switch between your console, terminal, and mobile node. Your watch history is
+                    synchronized through our global neural network.
                 </p>
-            </div>
-            <!-- right side -->
-            <div class="flex-1 relative">
-                <img src="/tv.png" alt="Tv image" class="mt-4 z-20 relative" />
-                <video class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1/2 z-10" playsInline
-                    autoplay muted loop>
-                    <source src="/hero-vid.m4v" type="video/mp4" />
-                </video>
-            </div>
-        </div>
-    </div>
-
-    <!-- separator -->
-    <div class="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
-
-    <!-- 2nd section -->
-    <div class="py-10 bg-black text-white">
-        <div class="flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col-reverse px-4 md:px-2">
-            <!-- left side -->
-            <div class="flex-1 relative">
-                <div class="relative">
-                    <img src="/stranger-things-lg.png" alt="Stranger Things img" class="mt-4" />
-
-                    <div class="flex items-center gap-2 absolute bottom-5 left-1/2 -translate-x-1/2 bg-black
-            w-3/4 lg:w-1/2 h-24 border border-slate-500 rounded-md px-2
-            ">
-                        <img src="/stranger-things-sm.png" alt="image" class="h-full" />
-                        <div class="flex justify-between items-center w-full">
-                            <div class="flex flex-col gap-0">
-                                <span class="text-md lg:text-lg font-bold">Stranger Things</span>
-                                <span class="text-sm text-blue-500">Downloading...</span>
-                            </div>
-
-                            <img src="/download-icon.gif" alt="" class="h-12" />
-                        </div>
+                <div class="grid grid-cols-2 gap-6 pt-4">
+                    <div class="p-6 bg-white/5 border border-white/10 rounded-3xl">
+                        <lucide-icon name="tv" class="text-nebula-cyan mb-4"></lucide-icon>
+                        <p class="font-bold">TV Nodes</p>
+                    </div>
+                    <div class="p-6 bg-white/5 border border-white/10 rounded-3xl">
+                        <lucide-icon name="smartphone" class="text-nebula-violet mb-4"></lucide-icon>
+                        <p class="font-bold">Mobile Nodes</p>
                     </div>
                 </div>
             </div>
-            <!-- right side -->
-
-            <div class="flex-1 md:text-left text-center">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4 text-balance">
-                    Download your shows to watch offline
-                </h2>
-                <p class="text-lg md:text-xl">
-                    Save your favorites easily and always have something to watch.
-                </p>
+            <div class="flex-1 relative group">
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-nebula-violet to-nebula-cyan rounded-[40px] blur opacity-25 group-hover:opacity-50 transition duration-1000">
+                </div>
+                <img src="/nebula_feature.png" alt="Neural Stream"
+                    class="relative rounded-[40px] shadow-2xl border border-white/10" />
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- separator -->
-
-    <div class="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
-
-    <!-- 3rd section -->
-    <div class="py-10 bg-black text-white">
-        <div class="flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col px-4 md:px-2">
-            <!-- left side -->
-            <div class="flex-1 text-center md:text-left">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Watch everywhere</h2>
-                <p class="text-lg md:text-xl">
-                    Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.
-                </p>
-            </div>
-
-            <!-- right side -->
-            <div class="flex-1 relative overflow-hidden">
-                <img src="/device-pile.png" alt="Device image" class="mt-4 z-20 relative" />
-                <video class="absolute top-2 left-1/2 -translate-x-1/2  h-4/6 z-10
-             max-w-[63%] 
-            " playsInline autoplay muted loop>
-                    <source src="/video-devices.m4v" type="video/mp4" />
-                </video>
-            </div>
-        </div>
-    </div>
-
-    <div class="h-2 w-full bg-[#232323]" aria-hidden="true"></div>
-
-    <!-- 4th section-->
-    <div class="py-10 bg-black text-white">
-        <div class="flex max-w-6xl mx-auto items-center justify-center flex-col-reverse md:flex-row
-           px-4 md:px-2
-        ">
-            <!-- left -->
-            <div class="flex-1 relative">
-                <img src="/kids.png" alt="Enjoy on your TV" class="mt-4" />
-            </div>
-            <!-- right -->
-            <div class="flex-1 text-center md:text-left">
-                <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Create profiles for kids</h2>
-                <p class="text-lg md:text-xl">
-                    Send kids on adventures with their favorite characters in a space made just for them—free
-                    with your membership.
-                </p>
-            </div>
-        </div>
-    </div>
+    <!-- Bottom Footer Gradient -->
+    <footer class="py-20 bg-nebula-dark text-center border-t border-white/5">
+        <p class="text-gray-600 text-sm tracking-widest uppercase font-bold">
+            Cognitive Stream &copy; 2026 // Neural Protocol v4.0.2
+        </p>
+    </footer>
 </div>

@@ -1,44 +1,71 @@
-<header class="max-w-6xl mx-auto flex flex-wrap items-center justify-between p-4 h-20">
-  <div class="flex items-center gap-10 z-50">
-    <a routerLink="/">
-      <img src="/netflix-logo.png" alt="Netflix Logo" class="w-32 sm:w-40" />
+<header
+  class="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4 h-24 sticky top-0 z-[100] backdrop-blur-md bg-nebula-dark/20 border-b border-white/5">
+  <div class="flex items-center gap-12">
+    <a routerLink="/" class="flex items-center space-x-2 group">
+      <div
+        class="w-10 h-10 bg-gradient-to-br from-nebula-violet to-nebula-cyan rounded-xl flex items-center justify-center shadow-lg shadow-nebula-violet/20 group-hover:rotate-12 transition-transform">
+        <span class="text-white font-bold text-xl">C</span>
+      </div>
+      <span class="text-white font-extrabold text-2xl tracking-tighter hidden xs:block">COGNITIVE<span
+          class="text-nebula-cyan">STREAM</span></span>
     </a>
 
     <!-- desktop navbar items -->
-    <div class="hidden sm:flex gap-2 items-center">
-      <a routerLink="/" class="hover:underline" (click)="setContentType('movie')">
+    <nav class="hidden md:flex gap-8 items-center text-sm font-medium">
+      <a routerLink="/" class="text-gray-400 hover:text-white transition-colors relative group"
+        (click)="setContentType('movie')">
         Movies
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-nebula-cyan group-hover:w-full transition-all"></span>
       </a>
-      <a routerLink="/" class="hover:underline" (click)="setContentType('tv')">
-        Tv Shows
+      <a routerLink="/" class="text-gray-400 hover:text-white transition-colors relative group"
+        (click)="setContentType('tv')">
+        TV Universe
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-nebula-cyan group-hover:w-full transition-all"></span>
       </a>
-      <a routerLink="/history" class="hover:underline">
-        Search History
+      <a routerLink="/history" class="text-gray-400 hover:text-white transition-colors relative group">
+        Trajectory
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-nebula-cyan group-hover:w-full transition-all"></span>
       </a>
-    </div>
+    </nav>
   </div>
 
-  <div class="flex gap-2 items-center z-50">
-    <a routerLink="/search">
-      <lucide-icon name="search" class="size-6 cursor-pointer"></lucide-icon>
+  <div class="flex gap-6 items-center">
+    <a routerLink="/search" class="text-gray-400 hover:text-nebula-cyan transition-colors">
+      <lucide-icon name="search" class="size-5"></lucide-icon>
     </a>
-    <img [src]="authService.user()?.image" alt="Avatar" class="h-8 rounded cursor-pointer" />
-    <lucide-icon name="log-out" class="size-6 cursor-pointer" (click)="logout()"></lucide-icon>
-    <div class="sm:hidden">
-      <lucide-icon name="menu" class="size-6 cursor-pointer" (click)="toggleMobileMenu()"></lucide-icon>
+
+    <div class="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
+
+    <div class="flex items-center gap-4">
+      <div class="flex flex-col items-end hidden sm:flex">
+        <span class="text-xs text-gray-400 font-medium">Operator</span>
+        <span class="text-sm text-white font-bold">{{ authService.user()?.username }}</span>
+      </div>
+      <img
+        [src]="authService.user()?.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + authService.user()?.username"
+        alt="Avatar" class="h-10 w-10 rounded-xl ring-2 ring-nebula-violet/30 object-cover shadow-lg" />
+    </div>
+
+    <button (click)="logout()"
+      class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all">
+      <lucide-icon name="log-out" class="size-5"></lucide-icon>
+    </button>
+
+    <div class="md:hidden">
+      <button (click)="toggleMobileMenu()" class="p-2 text-gray-400 hover:text-white">
+        <lucide-icon name="menu" class="size-6"></lucide-icon>
+      </button>
     </div>
   </div>
 
   <!-- mobile navbar items -->
-  <div *ngIf="isMobileMenuOpen()" class="w-full sm:hidden mt-4 z-50 bg-black border rounded border-gray-800">
-    <a routerLink="/" class="block hover:underline p-2" (click)="setContentType('movie')">
-      Movies
-    </a>
-    <a routerLink="/" class="block hover:underline p-2" (click)="setContentType('tv')">
-      Tv Shows
-    </a>
-    <a routerLink="/history" class="block hover:underline p-2" (click)="setContentType('history')">
-      Search History
-    </a>
+  <div *ngIf="isMobileMenuOpen()"
+    class="w-full md:hidden mt-4 bg-nebula-dark/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
+    <a routerLink="/" class="block text-gray-300 hover:bg-white/5 px-6 py-4"
+      (click)="setContentType('movie')">Movies</a>
+    <a routerLink="/" class="block text-gray-300 hover:bg-white/5 px-6 py-4" (click)="setContentType('tv')">TV
+      Universe</a>
+    <a routerLink="/history" class="block text-gray-300 hover:bg-white/5 px-6 py-4"
+      (click)="toggleMobileMenu()">Trajectory</a>
   </div>
 </header>
