@@ -57,11 +57,10 @@ public class AuthController {
     }
 
     private void clearCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie("jwt-netflix", "");
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+    // We must match the Path, SameSite, and Secure attributes 
+    // for the browser to successfully overwrite/delete the cookie.
+    String cookieHeader = "jwt-netflix=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None";
+    response.addHeader("Set-Cookie", cookieHeader);
     }
 
     @GetMapping("/authCheck")
