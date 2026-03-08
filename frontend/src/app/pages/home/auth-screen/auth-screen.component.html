@@ -1,97 +1,76 @@
 <div class="hero-bg relative min-h-screen flex flex-col font-sans text-white overflow-x-hidden">
     <!-- Navbar -->
-    <header class="max-w-7xl mx-auto w-full flex items-center justify-between p-6 z-50">
-        <div class="flex items-center space-x-3 group">
-            <div
-                class="w-12 h-12 bg-gradient-to-br from-nebula-violet to-nebula-cyan rounded-2xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
-                <span class="text-white font-black text-2xl">C</span>
+    <header class="max-w-7xl mx-auto w-full flex items-center justify-between p-8 z-50">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 bg-nebula-violet rounded-xl flex items-center justify-center">
+                <span class="text-white font-bold text-xl">C</span>
             </div>
-            <div class="flex flex-col leading-tight">
-                <span class="text-white font-black text-2xl tracking-tighter">COGNITIVE</span>
-                <span class="text-nebula-cyan font-bold text-xs tracking-[0.3em]">STREAMING LABS</span>
-            </div>
+            <span class="text-white font-bold text-xl tracking-tight uppercase">Cognitive Stream</span>
         </div>
         <a routerLink="/login"
-            class="px-8 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl font-bold transition-all hover:scale-105 active:scale-95 shadow-lg">
-            Access Terminal
+            class="px-6 py-2 border border-white/20 rounded-full text-sm font-semibold hover:bg-white/5 transition-all">
+            Login
         </a>
     </header>
 
     <!-- Hero Section -->
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 pt-20 pb-40 z-10 relative">
-        <div
-            class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-nebula-violet/20 blur-[120px] rounded-full -z-10 animate-pulse">
+    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 pt-10 pb-32 z-10 relative">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full mb-8">
+            <span class="w-1.5 h-1.5 bg-nebula-cyan rounded-full"></span>
+            <span class="text-gray-400 text-[10px] font-bold uppercase tracking-widest">v4.0.2 Protocol</span>
         </div>
 
-        <div
-            class="inline-flex items-center space-x-2 px-4 py-2 bg-nebula-violet/20 border border-nebula-violet/30 rounded-full mb-8 backdrop-blur-md">
-            <span class="w-2 h-2 bg-nebula-cyan rounded-full animate-ping"></span>
-            <span class="text-nebula-cyan text-xs font-bold uppercase tracking-widest">New Universe Detected</span>
-        </div>
-
-        <h1
-            class="text-5xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tight max-w-5xl bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/40">
-            Limitless Content.<br />
-            Engineered for <span class="text-nebula-cyan">Discovery.</span>
+        <h1 class="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter max-w-4xl text-white">
+            Future of <span class="text-nebula-violet">Discovery</span>.
         </h1>
 
-        <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-2xl leading-relaxed">
-            Experience a cinematic ecosystem where every frame is a stream of pure data. No boundaries. Infinite
-            possibilities.
+        <p class="text-lg md:text-xl text-gray-500 mb-12 max-w-xl leading-relaxed">
+            A minimalist gateway to cinematic experiences. High performance streaming, engineered for clarity.
         </p>
 
         <form
-            class="flex flex-col md:flex-row gap-4 w-full max-w-lg p-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl"
+            class="flex flex-col md:flex-row gap-2 w-full max-w-md p-1.5 bg-white/5 border border-white/10 rounded-2xl"
             (submit)="handleFormSubmit($event)">
-            <input type="email" placeholder="Enter your data handle (email)"
-                class="px-6 py-4 rounded-2xl flex-1 bg-transparent border-none text-white focus:outline-none placeholder-gray-500"
+            <input type="email" placeholder="Email address"
+                class="px-5 py-3 rounded-xl flex-1 bg-transparent border-none text-white focus:outline-none placeholder-gray-600"
                 [ngModel]="email()" (ngModelChange)="email.set($event)" name="email" />
             <button
-                class="bg-gradient-to-r from-nebula-violet to-nebula-blue text-white font-black px-10 py-4 rounded-2xl flex justify-center items-center shadow-lg shadow-nebula-violet/40 hover:scale-[1.05] active:scale-[0.95] transition-all">
-                Initialize
-                <lucide-icon name="arrow-right" class="size-5 ml-3"></lucide-icon>
+                class="bg-white text-black font-bold px-8 py-3 rounded-xl hover:bg-gray-200 active:scale-95 transition-all">
+                Get Started
             </button>
         </form>
     </main>
 
     <!-- Featured Section -->
-    <section class="py-32 bg-nebula-dark/80 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-20">
-            <div class="flex-1 space-y-8">
-                <div class="w-16 h-1 bg-nebula-cyan rounded-full"></div>
-                <h2 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">
-                    Multi-Device <br />
-                    <span class="text-gray-500">Synchronization.</span>
-                </h2>
-                <p class="text-xl text-gray-400 leading-relaxed max-w-lg">
-                    Seamlessly switch between your console, terminal, and mobile node. Your watch history is
-                    synchronized through our global neural network.
+    <section class="py-24 bg-nebula-dark border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center gap-24">
+            <div class="flex-1 space-y-6">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight">Synchronized Nodes.</h2>
+                <p class="text-lg text-gray-500 leading-relaxed max-w-md">
+                    Access your stream across all devices. No friction, just pure data synchronization.
                 </p>
-                <div class="grid grid-cols-2 gap-6 pt-4">
-                    <div class="p-6 bg-white/5 border border-white/10 rounded-3xl">
-                        <lucide-icon name="tv" class="text-nebula-cyan mb-4"></lucide-icon>
-                        <p class="font-bold">TV Nodes</p>
+                <div class="flex gap-4 pt-4">
+                    <div class="px-6 py-4 bg-white/5 border border-white/10 rounded-2xl flex-1">
+                        <lucide-icon name="tv" class="text-nebula-violet mb-2" [size]="20"></lucide-icon>
+                        <p class="text-sm font-bold">Smart TV</p>
                     </div>
-                    <div class="p-6 bg-white/5 border border-white/10 rounded-3xl">
-                        <lucide-icon name="smartphone" class="text-nebula-violet mb-4"></lucide-icon>
-                        <p class="font-bold">Mobile Nodes</p>
+                    <div class="px-6 py-4 bg-white/5 border border-white/10 rounded-2xl flex-1">
+                        <lucide-icon name="smartphone" class="text-nebula-cyan mb-2" [size]="20"></lucide-icon>
+                        <p class="text-sm font-bold">Mobile</p>
                     </div>
                 </div>
             </div>
-            <div class="flex-1 relative group">
-                <div
-                    class="absolute -inset-1 bg-gradient-to-r from-nebula-violet to-nebula-cyan rounded-[40px] blur opacity-25 group-hover:opacity-50 transition duration-1000">
-                </div>
+            <div class="flex-1">
                 <img src="/nebula_feature.png" alt="Neural Stream"
-                    class="relative rounded-[40px] shadow-2xl border border-white/10" />
+                    class="rounded-[40px] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700 border border-white/10" />
             </div>
         </div>
     </section>
 
-    <!-- Bottom Footer Gradient -->
-    <footer class="py-20 bg-nebula-dark text-center border-t border-white/5">
-        <p class="text-gray-600 text-sm tracking-widest uppercase font-bold">
-            Cognitive Stream &copy; 2026 // Neural Protocol v4.0.2
+    <!-- Bottom Footer -->
+    <footer class="py-12 bg-nebula-dark text-center border-t border-white/5 opacity-50">
+        <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">
+            Cognitive Stream &copy; 2026
         </p>
     </footer>
 </div>

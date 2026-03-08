@@ -10,20 +10,20 @@ export default {
     extend: {
       colors: {
         nebula: {
-          dark: '#0B0E14',
-          violet: '#8B5CF6',
+          dark: '#05070A',
+          violet: '#7C3AED',
           cyan: '#06B6D4',
-          blue: '#3B82F6',
-          deep: '#1E1B4B',
+          blue: '#2563EB',
+          deep: '#0F172A',
         },
         brand: {
-          DEFAULT: '#8B5CF6',
-          light: '#A78BFA',
-          dark: '#7C3AED',
+          DEFAULT: '#7C3AED',
+          light: '#8B5CF6',
+          dark: '#6D28D9',
         }
       },
       backgroundImage: {
-        'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+        'sleek-dark': 'linear-gradient(to bottom, #05070A, #0F172A)',
       },
       backdropBlur: {
         xs: '2px',

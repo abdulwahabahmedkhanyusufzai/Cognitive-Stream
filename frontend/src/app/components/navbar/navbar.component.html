@@ -1,71 +1,52 @@
 <header
-  class="max-w-7xl mx-auto flex flex-wrap items-center justify-between p-4 h-24 sticky top-0 z-[100] backdrop-blur-md bg-nebula-dark/20 border-b border-white/5">
+  class="max-w-7xl mx-auto flex items-center justify-between p-6 px-8 sticky top-0 z-[100] backdrop-blur-xl bg-nebula-dark/80 border-b border-white/5">
   <div class="flex items-center gap-12">
-    <a routerLink="/" class="flex items-center space-x-2 group">
+    <a routerLink="/" class="flex items-center space-x-3 group">
       <div
-        class="w-10 h-10 bg-gradient-to-br from-nebula-violet to-nebula-cyan rounded-xl flex items-center justify-center shadow-lg shadow-nebula-violet/20 group-hover:rotate-12 transition-transform">
-        <span class="text-white font-bold text-xl">C</span>
+        class="w-8 h-8 bg-nebula-violet rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+        <span class="text-white font-bold text-sm">C</span>
       </div>
-      <span class="text-white font-extrabold text-2xl tracking-tighter hidden xs:block">COGNITIVE<span
-          class="text-nebula-cyan">STREAM</span></span>
+      <span class="text-white font-bold text-lg tracking-tight uppercase hidden xs:block">Cognitive Stream</span>
     </a>
 
-    <!-- desktop navbar items -->
-    <nav class="hidden md:flex gap-8 items-center text-sm font-medium">
-      <a routerLink="/" class="text-gray-400 hover:text-white transition-colors relative group"
-        (click)="setContentType('movie')">
-        Movies
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-nebula-cyan group-hover:w-full transition-all"></span>
-      </a>
-      <a routerLink="/" class="text-gray-400 hover:text-white transition-colors relative group"
-        (click)="setContentType('tv')">
-        TV Universe
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-nebula-cyan group-hover:w-full transition-all"></span>
-      </a>
-      <a routerLink="/history" class="text-gray-400 hover:text-white transition-colors relative group">
-        Trajectory
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-nebula-cyan group-hover:w-full transition-all"></span>
-      </a>
+    <!-- desktop items -->
+    <nav class="hidden md:flex gap-8 items-center text-xs font-bold uppercase tracking-widest">
+      <a routerLink="/" class="text-gray-500 hover:text-white transition-colors"
+        (click)="setContentType('movie')">Movies</a>
+      <a routerLink="/" class="text-gray-500 hover:text-white transition-colors"
+        (click)="setContentType('tv')">Universe</a>
+      <a routerLink="/history" class="text-gray-500 hover:text-white transition-colors">Trajectory</a>
     </nav>
   </div>
 
-  <div class="flex gap-6 items-center">
-    <a routerLink="/search" class="text-gray-400 hover:text-nebula-cyan transition-colors">
-      <lucide-icon name="search" class="size-5"></lucide-icon>
+  <div class="flex gap-8 items-center">
+    <a routerLink="/search" class="text-gray-500 hover:text-white transition-colors">
+      <lucide-icon name="search" class="size-4"></lucide-icon>
     </a>
 
-    <div class="h-8 w-[1px] bg-white/10 hidden sm:block"></div>
-
-    <div class="flex items-center gap-4">
-      <div class="flex flex-col items-end hidden sm:flex">
-        <span class="text-xs text-gray-400 font-medium">Operator</span>
-        <span class="text-sm text-white font-bold">{{ authService.user()?.username }}</span>
-      </div>
+    <div class="flex items-center gap-4 border-l border-white/10 pl-8">
       <img
         [src]="authService.user()?.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + authService.user()?.username"
-        alt="Avatar" class="h-10 w-10 rounded-xl ring-2 ring-nebula-violet/30 object-cover shadow-lg" />
+        alt="Avatar" class="h-8 w-8 rounded-lg object-cover ring-1 ring-white/20" />
+      <button (click)="logout()" class="p-2 text-gray-500 hover:text-red-400 transition-all">
+        <lucide-icon name="log-out" class="size-4"></lucide-icon>
+      </button>
     </div>
 
-    <button (click)="logout()"
-      class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all">
-      <lucide-icon name="log-out" class="size-5"></lucide-icon>
-    </button>
-
     <div class="md:hidden">
-      <button (click)="toggleMobileMenu()" class="p-2 text-gray-400 hover:text-white">
-        <lucide-icon name="menu" class="size-6"></lucide-icon>
+      <button (click)="toggleMobileMenu()" class="p-2 text-gray-500 ">
+        <lucide-icon name="menu" class="size-5"></lucide-icon>
       </button>
     </div>
   </div>
 
-  <!-- mobile navbar items -->
+  <!-- mobile menu -->
   <div *ngIf="isMobileMenuOpen()"
-    class="w-full md:hidden mt-4 bg-nebula-dark/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl animate-in fade-in slide-in-from-top-4 duration-300">
-    <a routerLink="/" class="block text-gray-300 hover:bg-white/5 px-6 py-4"
-      (click)="setContentType('movie')">Movies</a>
-    <a routerLink="/" class="block text-gray-300 hover:bg-white/5 px-6 py-4" (click)="setContentType('tv')">TV
-      Universe</a>
-    <a routerLink="/history" class="block text-gray-300 hover:bg-white/5 px-6 py-4"
-      (click)="toggleMobileMenu()">Trajectory</a>
+    class="absolute top-24 left-6 right-6 p-6 bg-nebula-dark border border-white/10 rounded-2xl shadow-2xl md:hidden z-[101]">
+    <nav class="flex flex-col gap-6 text-sm font-bold uppercase tracking-widest">
+      <a routerLink="/" class="text-gray-400" (click)="setContentType('movie')">Movies</a>
+      <a routerLink="/" class="text-gray-400" (click)="setContentType('tv')">Universe</a>
+      <a routerLink="/history" class="text-gray-400" (click)="toggleMobileMenu()">Trajectory</a>
+    </nav>
   </div>
 </header>
