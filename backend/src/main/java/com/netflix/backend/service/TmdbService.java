@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
+import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,14 +32,10 @@ public class TmdbService {
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .header("accept", "application/json");
 
-            // Check if we are using a v3 API Key (32 chars) or a v4 Read Access Token (long
-            // JWT)
             if (tmdbApiKey != null && tmdbApiKey.length() <= 32) {
-                // v3 API Key style: append as query parameter
                 String separator = url.contains("?") ? "&" : "?";
                 url = url + separator + "api_key=" + tmdbApiKey;
             } else if (tmdbApiKey != null) {
-                // v4 Read Access Token style: use Authorization header
                 requestBuilder.header("Authorization", "Bearer " + tmdbApiKey);
             }
 
@@ -53,14 +50,35 @@ public class TmdbService {
                 if (response.statusCode() == 404) {
                     return null;
                 }
-                // Log the fail but hide the key
-                throw new RuntimeException("Failed to fetch data from TMDB: " + response.statusCode() + " for URL: "
-                        + baseUrl.replaceAll("api_key=[^&]+", "api_key=***"));
+                throw new RuntimeException("Failed to fetch data from TMDB: " + response.statusCode());
             }
 
             return objectMapper.readValue(response.body(), Map.class);
         } catch (Exception e) {
             throw new RuntimeException("Error fetching from TMDB", e);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String extractYoutubeKey(String type, String id) {
+        try {
+            Map<String, Object> data = fetchFromTmdb(
+                    "https://api.themoviedb.org/3/" + type + "/" + id + "/videos?language=en-US");
+            if (data == null || !data.containsKey("results"))
+                return null;
+
+            List<Map<String, Object>> results = (List<Map<String, Object>>) data.get("results");
+            for (Map<String, Object> video : results) {
+                String site = (String) video.get("site");
+                String videoType = (String) video.get("type");
+                if ("YouTube".equalsIgnoreCase(site)
+                        && ("Trailer".equalsIgnoreCase(videoType) || "Teaser".equalsIgnoreCase(videoType))) {
+                    return (String) video.get("key");
+                }
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
     }
 }

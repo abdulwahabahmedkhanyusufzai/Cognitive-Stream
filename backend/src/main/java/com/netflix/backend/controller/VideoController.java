@@ -1,5 +1,6 @@
 package com.netflix.backend.controller;
 
+import com.netflix.backend.service.IngestionService;
 import com.netflix.backend.service.TmdbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class VideoController {
 
     private final TmdbService tmdbService;
+    private final IngestionService ingestionService;
     private final Path videoStorageLocation = Paths.get("storage/hls-content");
 
     @GetMapping("/{type}/{id}")
@@ -36,25 +38,28 @@ public class VideoController {
             response.put("url", "/api/v1/videos/" + id + "/master.m3u8?token=" + streamToken);
             response.put("provider", "Nebula Local Storage (ABR Active)");
             response.put("isLocal", true);
+            response.put("status", "READY");
         } else {
-            // 2. Integration with TMDB Videos
-            // Here we trigger the automated pipeline:
-            // 1. Fetch TMDB video key (e.g. YouTube ID)
-            // 2. Run 'yt-dlp' to download the source
-            // 3. Run 'transcode.sh' to generate HLS segments
-            // 4. Mark as 'ready' in Database
+            // 2. Integration with TMDB Videos -> Trigger Ingestion
+            String youtubeKey = tmdbService.extractYoutubeKey(type, id);
+            String jobStatus = ingestionService.getStatus(id);
 
-            System.out.println("[Transcoding] Movie ID: " + id + " - Job scheduled for background execution");
+            if (youtubeKey != null && "NOT_STARTED".equals(jobStatus)) {
+                // Trigger background download and transcode
+                ingestionService.ingestFromYoutube(id, youtubeKey);
+                response.put("status", "INGESTION_STARTED");
+            } else {
+                response.put("status", jobStatus);
+            }
 
-            // For this implementation, we map the TMDB ID to a high-quality HLS demo stream
-            // to showcase the Adaptive Bitrate Player with real movie metadata.
+            // While processing, we provide a high-quality HLS demo stream
             String demoHls = "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8";
 
             response.put("url", demoHls);
             response.put("provider", "Nebula Global CDN (Auto-Resolution Active)");
             response.put("tmdb_id", id);
             response.put("isLocal", false);
-            response.put("status", "Processing Background Ingestion");
+            response.put("youtubeKey", youtubeKey);
         }
 
         response.put("protocol", "HLS");
