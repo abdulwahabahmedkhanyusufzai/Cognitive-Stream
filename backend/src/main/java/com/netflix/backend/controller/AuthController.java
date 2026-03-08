@@ -24,18 +24,30 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequest request, HttpServletResponse response) {
-        log.info("Signup request received for user: {}", request.getEmail());
-        AuthResponse authResponse = authService.signup(request);
-        setCookie(response, authResponse.getToken());
-        return ResponseEntity.ok(authResponse);
+        log.info("Signup request received for email: {}", request.getEmail());
+        try {
+            AuthResponse authResponse = authService.signup(request);
+            log.info("Signup successful for user: {}", request.getUsername());
+            setCookie(response, authResponse.getToken());
+            return ResponseEntity.ok(authResponse);
+        } catch (Exception e) {
+            log.error("Signup failed for email {}: {}", request.getEmail(), e.getMessage());
+            throw e;
+        }
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request, HttpServletResponse response) {
         log.info("Login request received for user: {}", request.getEmail());
-        AuthResponse authResponse = authService.login(request);
-        setCookie(response, authResponse.getToken());
-        return ResponseEntity.ok(authResponse);
+        try {
+            AuthResponse authResponse = authService.login(request);
+            log.info("Login successful for user: {}", request.getEmail());
+            setCookie(response, authResponse.getToken());
+            return ResponseEntity.ok(authResponse);
+        } catch (Exception e) {
+            log.error("Login failed for user {}: {}", request.getEmail(), e.getMessage());
+            throw e;
+        }
     }
 
     @PostMapping("/logout")
@@ -57,10 +69,10 @@ public class AuthController {
     }
 
     private void clearCookie(HttpServletResponse response) {
-    // We must match the Path, SameSite, and Secure attributes 
-    // for the browser to successfully overwrite/delete the cookie.
-    String cookieHeader = "jwt-netflix=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None";
-    response.addHeader("Set-Cookie", cookieHeader);
+        // We must match the Path, SameSite, and Secure attributes
+        // for the browser to successfully overwrite/delete the cookie.
+        String cookieHeader = "jwt-netflix=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=None";
+        response.addHeader("Set-Cookie", cookieHeader);
     }
 
     @GetMapping("/authCheck")
