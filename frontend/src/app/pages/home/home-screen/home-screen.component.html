@@ -1,10 +1,10 @@
-<div class="relative h-screen text-white overflow-hidden flex flex-col">
+<div class="relative h-screen text-white overflow-hidden flex flex-col bg-nebula-dark">
     <app-navbar></app-navbar>
 
     <!-- LOADING SHIMMER -->
     <div *ngIf="imgLoading() && trendingContent()"
-        class="absolute inset-0 bg-nebula-dark flex items-center justify-center -z-10">
-        <div class="w-20 h-20 border-4 border-nebula-violet/20 border-t-nebula-cyan rounded-full animate-spin"></div>
+        class="absolute inset-0 bg-nebula-dark flex items-center justify-center z-50">
+        <div class="w-12 h-12 border-2 border-white/5 border-t-white rounded-full animate-spin"></div>
     </div>
 
     <!-- HERO BACKGROUND -->
@@ -12,8 +12,8 @@
         <img *ngIf="trendingContent()" [src]="ORIGINAL_IMG_BASE_URL + trendingContent()?.backdrop_path"
             alt="Hero backdrop" class="w-full h-full object-cover transition-opacity duration-1000"
             [class.opacity-0]="imgLoading()" (load)="imgLoading.set(false)" />
-        <div class="absolute inset-0 bg-gradient-to-r from-nebula-dark via-nebula-dark/40 to-transparent"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-nebula-dark via-transparent to-nebula-dark/20"></div>
+        <div class="absolute inset-0 bg-nebula-dark/60"></div>
+        <div class="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-nebula-dark to-transparent"></div>
     </div>
 
     <!-- HERO CONTENT -->

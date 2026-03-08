@@ -1,154 +1,142 @@
 <div class="bg-nebula-dark min-h-screen text-white font-sans overflow-x-hidden">
     <app-navbar></app-navbar>
 
-    <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="max-w-7xl mx-auto px-8 py-16">
         @if (loading()) {
-        <div class="h-[60vh] flex flex-col items-center justify-center space-y-6">
-            <div class="w-24 h-24 border-4 border-nebula-violet/20 border-t-nebula-cyan rounded-full animate-spin">
-            </div>
-            <p class="text-nebula-cyan font-bold tracking-widest animate-pulse">SYNCHRONIZING SIGNAL...</p>
+        <div class="h-[60vh] flex flex-col items-center justify-center space-y-4">
+            <div class="w-12 h-12 border-2 border-white/5 border-t-white rounded-full animate-spin"></div>
+            <p class="text-[10px] font-black tracking-[0.4em] text-gray-500 uppercase">Synchronizing...</p>
         </div>
         } @else if (!content()) {
-        <div class="h-[60vh] flex flex-col items-center justify-center text-center">
-            <h2 class="text-5xl md:text-7xl font-black text-white/20 mb-4 tracking-tighter">DATA GAP</h2>
-            <p class="text-xl text-gray-500">The requested transmission could not be localized.</p>
+        <div class="h-[60vh] flex flex-col items-center justify-center text-center opacity-30">
+            <h2 class="text-7xl font-black mb-4 tracking-tighter">DATA GAP</h2>
+            <p class="text-sm uppercase tracking-widest font-bold">Transmission localized failed.</p>
         </div>
         } @else {
         <!-- Content Header -->
-        <div class="mb-12">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
-                <div class="space-y-4">
+        <div class="mb-16">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-12">
+                <div class="space-y-6">
                     <div
-                        class="inline-flex items-center space-x-2 px-3 py-1 bg-nebula-violet/20 border border-nebula-violet/30 rounded-lg">
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-nebula-violet">Active
-                            Stream</span>
+                        class="flex items-center space-x-3 text-xs font-black uppercase tracking-[0.4em] text-gray-500">
+                        <span class="w-1.5 h-1.5 bg-nebula-violet rounded-full"></span>
+                        <span>Stream active</span>
                     </div>
-                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-none">
+                    <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-none text-white">
                         {{ content()?.title || content()?.name }}
                     </h1>
-                    <div class="flex items-center space-x-4 text-sm font-bold text-gray-400">
-                        <span class="text-nebula-cyan">{{ (content()?.release_date || content()?.first_air_date) |
-                            date:'yyyy' }}</span>
-                        <span class="w-1.5 h-1.5 bg-gray-700 rounded-full"></span>
-                        <span class="px-2 py-0.5 rounded border border-white/10">{{ content()?.adult ? "18+ RESTRICTED"
-                            : "PG-13 OPEN" }}</span>
+                    <div
+                        class="flex items-center space-x-6 text-[10px] font-black text-gray-500 tracking-widest uppercase">
+                        <span class="text-white">{{ (content()?.release_date || content()?.first_air_date) | date:'yyyy'
+                            }}</span>
+                        <span class="px-2 py-0.5 rounded border border-white/10">{{ content()?.adult ? "RESTRICTED" :
+                            "PG-13" }}</span>
+                        <span>SCORE: {{ content()?.vote_average?.toFixed(1) }}</span>
                     </div>
                 </div>
 
                 @if (trailers().length > 1) {
-                <div
-                    class="flex items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-1 shadow-2xl">
-                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all disabled:opacity-20"
+                <div class="flex items-center bg-white/5 border border-white/10 rounded-2xl p-1">
+                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all disabled:opacity-10"
                         [disabled]="currentTrailerIdx() === 0" (click)="handlePrev()">
-                        <lucide-icon name="chevron-left" [size]="20"></lucide-icon>
+                        <lucide-icon name="chevron-left" [size]="18"></lucide-icon>
                     </button>
-                    <span class="px-4 text-xs font-black tracking-widest text-gray-500 uppercase">
-                        Signal {{currentTrailerIdx() + 1}} <span class="text-white/20">/</span> {{trailers().length}}
+                    <span class="px-6 text-[9px] font-black tracking-[0.3em] text-gray-500 uppercase">
+                        Signal {{currentTrailerIdx() + 1}} <span class="mx-2 opacity-20">|</span> {{trailers().length}}
                     </span>
-                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all disabled:opacity-20"
+                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all disabled:opacity-10"
                         [disabled]="currentTrailerIdx() === trailers().length - 1" (click)="handleNext()">
-                        <lucide-icon name="chevron-right" [size]="20"></lucide-icon>
+                        <lucide-icon name="chevron-right" [size]="18"></lucide-icon>
                     </button>
                 </div>
                 }
             </div>
         </div>
 
-        <!-- Neural Display (Video Player) -->
+        <!-- Cinematic Display -->
         <div
-            class="relative group rounded-[32px] overflow-hidden bg-black shadow-2xl border border-white/5 aspect-video mb-20 shadow-nebula-violet/10">
-            <div
-                class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-            </div>
+            class="relative rounded-[40px] overflow-hidden bg-black border border-white/5 aspect-video mb-24 shadow-2xl">
             @if (trailers().length > 0) {
             <iframe [src]="getSafeUrl(trailers()[currentTrailerIdx()].key)" class="w-full h-full" frameborder="0"
                 allowfullscreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
             </iframe>
             } @else {
-            <div class="w-full h-full flex flex-col items-center justify-center bg-nebula-dark/40 space-y-4">
-                <lucide-icon name="alert-circle" class="size-12 text-nebula-cyan opacity-50"></lucide-icon>
-                <h2 class="text-xl font-bold text-gray-400">No Visual Data Available</h2>
+            <div class="w-full h-full flex flex-col items-center justify-center bg-white/5 space-y-4 opacity-20">
+                <lucide-icon name="alert-circle" class="size-12"></lucide-icon>
+                <p class="text-xs font-bold uppercase tracking-widest">No Visual Data</p>
             </div>
             }
         </div>
 
-        <!-- Meta Information -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-32 items-start">
-            <div class="lg:col-span-2 space-y-8">
-                <div class="space-y-4">
-                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-nebula-cyan">Transmission Summary</h3>
-                    <p class="text-xl md:text-2xl text-gray-300 leading-relaxed font-light">
+        <!-- Information Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-24 mb-32 items-start">
+            <div class="lg:col-span-2 space-y-12">
+                <div class="space-y-6">
+                    <h3
+                        class="text-xs font-black uppercase tracking-[0.4em] text-gray-600 border-l-2 border-nebula-violet pl-4">
+                        Transmission Summary</h3>
+                    <p class="text-xl text-gray-400 leading-relaxed font-medium">
                         {{ content()?.overview }}
                     </p>
                 </div>
 
-                <div class="p-8 bg-white/5 border border-white/10 rounded-[32px] backdrop-blur-xl">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                        <div>
-                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Status</p>
-                            <p class="font-bold text-nebula-cyan">Synchronized</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Rating</p>
-                            <p class="font-bold">{{content()?.vote_average}} / 10</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Popularity
-                            </p>
-                            <p class="font-bold">{{content()?.popularity?.toFixed(0)}}</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Language</p>
-                            <p class="font-bold uppercase">{{content()?.original_language}}</p>
-                        </div>
+                <div
+                    class="grid grid-cols-2 md:grid-cols-4 gap-12 p-10 bg-white/5 border border-white/5 rounded-[40px]">
+                    <div>
+                        <p class="text-[9px] font-black uppercase text-gray-600 tracking-widest mb-2">Protocol</p>
+                        <p class="font-bold text-white text-sm">Synchronized</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black uppercase text-gray-600 tracking-widest mb-2">Rank</p>
+                        <p class="font-bold text-white text-sm">{{content()?.vote_average}} / 10</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black uppercase text-gray-600 tracking-widest mb-2">Popularity</p>
+                        <p class="font-bold text-white text-sm">{{content()?.popularity?.toFixed(0)}}</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-black uppercase text-gray-600 tracking-widest mb-2">Language</p>
+                        <p class="font-bold text-white text-sm uppercase">{{content()?.original_language}}</p>
                     </div>
                 </div>
             </div>
 
-            <div class="relative group">
-                <div
-                    class="absolute -inset-1 bg-gradient-to-r from-nebula-violet to-nebula-cyan rounded-[40px] blur opacity-25 group-hover:opacity-50 transition duration-1000">
-                </div>
-                <img [src]="ORIGINAL_IMG_BASE_URL + content()?.poster_path" alt="Metadata poster"
-                    class="relative rounded-[40px] shadow-2xl border border-white/10 w-full" />
+            <div class="hidden lg:block">
+                <img [src]="ORIGINAL_IMG_BASE_URL + content()?.poster_path" alt="Poster"
+                    class="rounded-[40px] shadow-2xl border border-white/5 w-full grayscale hover:grayscale-0 transition-all duration-700" />
             </div>
         </div>
 
-        <!-- Neighboring Signals (Similar Content) -->
+        <!-- Similar Signals -->
         @if (similarContent().length > 0) {
-        <div class="space-y-10">
-            <div class="flex items-center space-x-4">
-                <div class="h-8 w-1.5 bg-nebula-cyan rounded-full"></div>
-                <h3 class="text-3xl font-black tracking-tight uppercase">Similar <span
-                        class="text-nebula-cyan">Signals</span></h3>
-            </div>
+        <div class="space-y-12">
+            <h3
+                class="text-sm font-black uppercase tracking-[0.4em] text-gray-600 border-l-2 border-nebula-violet pl-4">
+                Similar Signals</h3>
 
             <div class="relative group/slider">
-                <div class="flex overflow-x-scroll scrollbar-hide gap-6 pb-12" #sliderRef>
+                <div class="flex overflow-x-scroll scrollbar-hide gap-6 pb-12 px-2" #sliderRef>
                     @for (item of similarContent(); track item.id) {
                     @if (item.poster_path) {
-                    <a [routerLink]="['/watch', item.id]" class="w-56 flex-none group/item">
-                        <div
-                            class="relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/10 shadow-lg group-hover/item:scale-105 transition-all group-hover/item:border-nebula-violet/50">
-                            <img [src]="SMALL_IMG_BASE_URL + item.poster_path" alt="Similar visual"
+                    <a [routerLink]="['/watch', item.id]"
+                        class="w-48 flex-none transition-all duration-300 hover:scale-[1.02]">
+                        <div class="relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/5 bg-white/5">
+                            <img [src]="SMALL_IMG_BASE_URL + item.poster_path" alt="Similar"
                                 class="w-full h-full object-cover" />
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-nebula-dark to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity">
-                            </div>
                         </div>
-                        <h4
-                            class="mt-4 text-sm font-bold text-gray-400 group-hover/item:text-white transition-colors truncate">
-                            {{ item.title || item.name }}</h4>
+                        <h4 class="mt-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate">
+                            {{ item.title || item.name }}
+                        </h4>
                     </a>
                     }
                     }
                 </div>
 
                 <button
-                    class="absolute top-1/2 -translate-y-full right-0 p-3 bg-nebula-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl text-white opacity-0 group-hover/slider:opacity-100 hover:bg-nebula-violet transition-all"
+                    class="absolute top-1/2 -translate-y-full right-0 p-4 bg-black/80 text-white border border-white/10 rounded-full opacity-0 group-hover/slider:opacity-100 hover:bg-white hover:text-black transition-all"
                     (click)="scrollRight()">
-                    <lucide-icon name="chevron-right" [size]="24"></lucide-icon>
+                    <lucide-icon name="chevron-right" [size]="20"></lucide-icon>
                 </button>
             </div>
         </div>

@@ -1,78 +1,73 @@
 <div class="bg-nebula-dark min-h-screen text-white font-sans overflow-x-hidden">
     <app-navbar></app-navbar>
 
-    <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="max-w-7xl mx-auto px-8 py-16">
         <!-- Search Header -->
-        <div class="flex flex-col items-center mb-16 space-y-8">
-            <div class="inline-flex p-1.5 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl">
-                <button class="py-2.5 px-8 rounded-xl text-sm font-black transition-all"
-                    [class.bg-gradient-to-r]="activeTab() === 'movie'"
-                    [class.from-nebula-violet]="activeTab() === 'movie'"
-                    [class.to-nebula-blue]="activeTab() === 'movie'" [class.text-white]="activeTab() === 'movie'"
+        <div class="flex flex-col items-center mb-24 space-y-12">
+            <div class="flex p-1 bg-white/5 border border-white/10 rounded-2xl">
+                <button class="py-2.5 px-8 rounded-xl text-[10px] font-black tracking-[0.2em] transition-all"
+                    [class.bg-white]="activeTab() === 'movie'" [class.text-black]="activeTab() === 'movie'"
                     [class.text-gray-500]="activeTab() !== 'movie'" [class.hover:text-white]="activeTab() !== 'movie'"
                     (click)="handleTabClick('movie')">
                     MOVIES
                 </button>
-                <button class="py-2.5 px-8 rounded-xl text-sm font-black transition-all"
-                    [class.bg-gradient-to-r]="activeTab() === 'tv'" [class.from-nebula-violet]="activeTab() === 'tv'"
-                    [class.to-nebula-blue]="activeTab() === 'tv'" [class.text-white]="activeTab() === 'tv'"
+                <button class="py-2.5 px-8 rounded-xl text-[10px] font-black tracking-[0.2em] transition-all"
+                    [class.bg-white]="activeTab() === 'tv'" [class.text-black]="activeTab() === 'tv'"
                     [class.text-gray-500]="activeTab() !== 'tv'" [class.hover:text-white]="activeTab() !== 'tv'"
                     (click)="handleTabClick('tv')">
-                    TV UNIVERSE
+                    UNIVERSE
                 </button>
-                <button class="py-2.5 px-8 rounded-xl text-sm font-black transition-all"
-                    [class.bg-gradient-to-r]="activeTab() === 'person'"
-                    [class.from-nebula-violet]="activeTab() === 'person'"
-                    [class.to-nebula-blue]="activeTab() === 'person'" [class.text-white]="activeTab() === 'person'"
+                <button class="py-2.5 px-8 rounded-xl text-[10px] font-black tracking-[0.2em] transition-all"
+                    [class.bg-white]="activeTab() === 'person'" [class.text-black]="activeTab() === 'person'"
                     [class.text-gray-500]="activeTab() !== 'person'" [class.hover:text-white]="activeTab() !== 'person'"
                     (click)="handleTabClick('person')">
                     ENTITIES
                 </button>
             </div>
 
-            <form class="w-full max-w-2xl group" (submit)="handleSearch($event)">
+            <form class="w-full max-w-xl" (submit)="handleSearch($event)">
                 <div
-                    class="relative flex items-center p-2 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl focus-within:border-nebula-cyan/50 transition-all">
+                    class="relative flex items-center p-1.5 bg-white/5 border border-white/10 rounded-2xl focus-within:border-white/20 transition-all">
                     <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" name="search"
                         placeholder="Scan for {{ activeTab() }} data..."
-                        class="w-full px-6 py-4 bg-transparent border-none text-white focus:outline-none placeholder-gray-600 font-medium" />
+                        class="w-full px-6 py-4 bg-transparent border-none text-white focus:outline-none placeholder-gray-600 text-sm font-medium" />
                     <button
-                        class="bg-nebula-cyan flex items-center justify-center size-14 rounded-2xl text-nebula-dark hover:scale-105 transition-all shadow-lg shadow-nebula-cyan/20">
-                        <lucide-icon name="search" class="size-6"></lucide-icon>
+                        class="bg-white flex items-center justify-center size-12 rounded-xl text-black hover:bg-gray-200 transition-all">
+                        <lucide-icon name="search" class="size-5"></lucide-icon>
                     </button>
                 </div>
             </form>
         </div>
 
         <!-- Result Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
             @for (result of results(); track result.id) {
             @if (result.poster_path || result.profile_path) {
-            <div class="group animate-in fade-in zoom-in duration-500">
+            <div class="group">
                 @if (activeTab() === 'person') {
                 <div class="flex flex-col items-center space-y-4">
-                    <div
-                        class="relative rounded-3xl overflow-hidden aspect-[3/4] border border-white/10 shadow-xl group-hover:border-nebula-cyan/50 transition-all">
+                    <div class="relative rounded-2xl overflow-hidden aspect-[3/4] border border-white/5 transition-all">
                         <img [src]="ORIGINAL_IMG_BASE_URL + result.profile_path" [alt]="result.name"
                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
                     </div>
                     <h2
-                        class="text-sm font-black tracking-widest uppercase text-gray-500 group-hover:text-white text-center">
-                        {{ result.name }}</h2>
+                        class="text-[10px] font-black tracking-widest uppercase text-gray-500 group-hover:text-white transition-colors">
+                        {{ result.name }}
+                    </h2>
                 </div>
                 } @else {
                 <a [routerLink]="['/watch', result.id]" class="block space-y-4"
                     (click)="contentService.setContentType(activeTab() === 'movie' ? 'movie' : 'tv')">
                     <div
-                        class="relative rounded-3xl overflow-hidden aspect-[2/3] border border-white/10 shadow-xl group-hover:scale-[1.03] group-hover:border-nebula-violet/50 transition-all duration-500">
+                        class="relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/5 group-hover:border-white/20 transition-all duration-500 bg-white/5">
                         <img [src]="ORIGINAL_IMG_BASE_URL + result.poster_path" [alt]="result.title || result.name"
-                            class="w-full h-full object-cover" />
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-nebula-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            class="absolute inset-x-0 bottom-0 p-4 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="text-[9px] font-black uppercase tracking-widest text-white truncate">{{
+                                result.title || result.name }}</p>
                         </div>
                     </div>
-                    <h2 class="text-sm font-bold text-gray-400 group-hover:text-white transition-colors truncate px-2">
-                        {{ result.title || result.name }}</h2>
                 </a>
                 }
             </div>
@@ -82,11 +77,10 @@
 
         <!-- Empty State -->
         @if (results().length === 0 && searchTerm()) {
-        <div class="flex flex-col items-center justify-center py-20 text-center space-y-4">
-            <lucide-icon name="eye-off" class="size-16 text-white/10"></lucide-icon>
-            <h3 class="text-2xl font-black text-white/20">NO SIGNAL DETECTED</h3>
-            <p class="text-gray-600 max-w-xs">Our neural sensors could not find any matches for that query in this
-                sector.</p>
+        <div class="flex flex-col items-center justify-center py-32 text-center opacity-30">
+            <lucide-icon name="eye-off" class="size-16 mb-6"></lucide-icon>
+            <p class="text-xl font-bold uppercase tracking-widest">No Signal</p>
+            <p class="text-xs">No matching data localized in this sector.</p>
         </div>
         }
     </div>
