@@ -1,17 +1,37 @@
-<div class="min-h-screen bg-cover bg-center flex flex-col justify-center items-center text-white"
-    style="background-image: url('/404.png');">
-    <header class="absolute top-0 left-0 p-4 bg-black w-full">
-        <a routerLink="/">
-            <img src="/netflix-logo.png" alt="Netflix" class="h-8" />
+<div class="min-h-screen bg-nebula-dark flex flex-col justify-center items-center text-white relative overflow-hidden">
+    <!-- Dynamic Background Elements -->
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-nebula-violet/10 blur-[100px] rounded-full">
+    </div>
+
+    <header class="absolute top-0 left-0 w-full p-8 flex items-center justify-between z-50">
+        <a routerLink="/" class="flex items-center space-x-2">
+            <div
+                class="w-8 h-8 bg-gradient-to-br from-nebula-violet to-nebula-cyan rounded-lg flex items-center justify-center shadow-lg shadow-nebula-violet/20">
+                <span class="text-white font-bold text-sm">C</span>
+            </div>
+            <span class="text-white font-black text-xl tracking-tighter">COGNITIVE<span
+                    class="text-nebula-cyan">STREAM</span></span>
         </a>
     </header>
-    <main class="text-center error-page--content z-10">
-        <h1 class="text-7xl font-semibold mb-4">Lost your way?</h1>
-        <p class="mb-6 text-xl">
-            Sorry, we can't find that page. You'll find lots to explore on the home page.
+
+    <main class="text-center z-10 px-4">
+        <div class="mb-8 relative">
+            <span class="text-[12rem] font-black opacity-10 leading-none">404</span>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight">Signal Lost.</h1>
+            </div>
+        </div>
+
+        <p class="mb-12 text-xl text-gray-400 max-w-md mx-auto leading-relaxed">
+            The neural path you are seeking does not exist in our current coordinate system. Re-orient yourself to the
+            main node.
         </p>
-        <a routerLink="/" class="bg-white text-black py-2 px-4 rounded">
-            Netflix Home
+
+        <a routerLink="/"
+            class="inline-flex items-center space-x-3 bg-gradient-to-r from-nebula-violet to-nebula-blue text-white font-black px-10 py-4 rounded-2xl shadow-xl shadow-nebula-violet/30 hover:scale-105 transition-all">
+            <lucide-icon name="home" class="size-5"></lucide-icon>
+            <span>Return to Matrix</span>
         </a>
     </main>
 </div>
