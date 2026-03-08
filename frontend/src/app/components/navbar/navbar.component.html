@@ -20,21 +20,27 @@
   </div>
 
   <div class="flex gap-8 items-center">
-    <a routerLink="/search" class="text-gray-500 hover:text-white transition-colors">
+    <a routerLink="/search" class="text-gray-500 hover:text-nebula-cyan transition-all transform hover:scale-110">
       <lucide-icon name="search" class="size-4"></lucide-icon>
     </a>
 
     <div class="flex items-center gap-4 border-l border-white/10 pl-8">
-      <img
-        [src]="authService.user()?.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + authService.user()?.username"
-        alt="Avatar" class="h-8 w-8 rounded-lg object-cover ring-1 ring-white/20" />
-      <button (click)="logout()" class="p-2 text-gray-500 hover:text-red-400 transition-all">
+      <div class="relative group/avatar">
+        <div
+          class="absolute -inset-1 bg-nebula-violet/20 rounded-lg blur opacity-0 group-hover/avatar:opacity-100 transition-opacity">
+        </div>
+        <img
+          [src]="authService.user()?.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + authService.user()?.username"
+          alt="Avatar" class="relative h-8 w-8 rounded-lg object-cover ring-1 ring-nebula-violet/50" />
+      </div>
+      <button (click)="logout()"
+        class="p-2 text-gray-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all">
         <lucide-icon name="log-out" class="size-4"></lucide-icon>
       </button>
     </div>
 
     <div class="md:hidden">
-      <button (click)="toggleMobileMenu()" class="p-2 text-gray-500 ">
+      <button (click)="toggleMobileMenu()" class="p-2 text-nebula-violet ">
         <lucide-icon name="menu" class="size-5"></lucide-icon>
       </button>
     </div>

@@ -37,7 +37,15 @@
 
                 <div class="flex items-center gap-6">
                     <span
-                        class="px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border border-white/10 text-gray-500">
+                        class="px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-full border transition-colors"
+                        [class.border-nebula-violet]="entry.searchType === 'movie'"
+                        [class.text-nebula-violet]="entry.searchType === 'movie'"
+                        [class.bg-nebula-violet/5]="entry.searchType === 'movie'"
+                        [class.border-nebula-cyan]="entry.searchType === 'tv'"
+                        [class.text-nebula-cyan]="entry.searchType === 'tv'"
+                        [class.bg-nebula-cyan/5]="entry.searchType === 'tv'"
+                        [class.border-white/10]="entry.searchType === 'person'"
+                        [class.text-gray-500]="entry.searchType === 'person'">
                         {{ entry.searchType }}
                     </span>
 
