@@ -1,74 +1,69 @@
-<div class="h-screen w-full hero-bg flex flex-col">
-    <header class="max-w-6xl mx-auto w-full flex items-center justify-between p-6">
-        <a routerLink="/" class="flex items-center space-x-2">
-            <div
-                class="w-10 h-10 bg-gradient-to-br from-nebula-violet to-nebula-cyan rounded-xl flex items-center justify-center shadow-lg shadow-nebula-violet/20">
-                <span class="text-white font-bold text-xl">C</span>
+<div class="h-screen w-full bg-nebula-dark flex flex-col font-sans">
+    <header class="max-w-6xl mx-auto w-full flex items-center justify-between p-8">
+        <a routerLink="/" class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-nebula-violet rounded-lg flex items-center justify-center">
+                <span class="text-white font-bold text-sm">C</span>
             </div>
-            <span class="text-white font-extrabold text-2xl tracking-tighter">COGNITIVE<span
-                    class="text-nebula-cyan">STREAM</span></span>
+            <span class="text-white font-bold text-lg tracking-tight uppercase">Cognitive Stream</span>
         </a>
     </header>
 
     <div class="flex-grow flex justify-center items-center px-4">
-        <div
-            class="w-full max-w-md p-10 space-y-8 bg-nebula-dark/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl">
+        <div class="w-full max-w-sm p-10 space-y-8 bg-white/5 border border-white/10 rounded-3xl">
             <div class="text-center">
-                <h1 class="text-white text-3xl font-bold tracking-tight">Join the Stream</h1>
-                <p class="text-gray-400 mt-2">Create your identity in the nebula</p>
+                <h1 class="text-white text-2xl font-bold tracking-tight">Create Identity</h1>
+                <p class="text-gray-500 mt-2 text-sm">Join the stream network</p>
             </div>
 
             <form class="space-y-6" (submit)="handleSignUp($event)">
-                <div class="space-y-1">
-                    <label htmlFor="email" class="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">
+                <div class="space-y-2">
+                    <label htmlFor="email" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
                         Email Address
                     </label>
                     <input type="email"
-                        class="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-nebula-violet/50 transition-all"
+                        class="w-full px-4 py-3 border border-white/10 rounded-xl bg-transparent text-white placeholder-gray-600 focus:outline-none focus:border-nebula-violet transition-all"
                         placeholder="you@nebula.ai" id="email" [(ngModel)]="email" name="email" />
                 </div>
 
-                <div class="space-y-1">
-                    <label htmlFor="username" class="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">
+                <div class="space-y-2">
+                    <label htmlFor="username"
+                        class="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
                         Username
                     </label>
                     <input type="text"
-                        class="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-nebula-violet/50 transition-all"
-                        placeholder="cosmic_traveler" id="username" [(ngModel)]="username" name="username" />
+                        class="w-full px-4 py-3 border border-white/10 rounded-xl bg-transparent text-white placeholder-gray-600 focus:outline-none focus:border-nebula-violet transition-all"
+                        placeholder="explorer" id="username" [(ngModel)]="username" name="username" />
                 </div>
 
-                <div class="space-y-1">
-                    <label htmlFor="password" class="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">
+                <div class="space-y-2">
+                    <label htmlFor="password"
+                        class="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">
                         Password
                     </label>
                     <input type="password"
-                        class="w-full px-4 py-3 border border-white/10 rounded-xl bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-nebula-violet/50 transition-all"
+                        class="w-full px-4 py-3 border border-white/10 rounded-xl bg-transparent text-white placeholder-gray-600 focus:outline-none focus:border-nebula-violet transition-all"
                         placeholder="••••••••" id="password" [(ngModel)]="password" name="password" />
                 </div>
 
                 <button
-                    class="w-full py-4 bg-gradient-to-r from-nebula-violet to-nebula-blue text-white font-bold rounded-xl shadow-lg shadow-nebula-violet/30 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="w-full py-4 bg-white text-black font-black rounded-xl hover:bg-gray-200 active:scale-95 transition-all disabled:opacity-50"
                     [disabled]="authService.isSigningUp()">
-                    <span *ngIf="!authService.isSigningUp()">Initialize Account</span>
+                    <span *ngIf="!authService.isSigningUp()">Initialize</span>
                     <span *ngIf="authService.isSigningUp()" class="flex items-center justify-center">
-                        <svg class="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
+                        <svg class="animate-spin h-5 w-5 mr-3 text-black" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
                             </circle>
                             <path class="opacity-75" fill="currentColor"
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
                         </svg>
-                        Creating...
                     </span>
                 </button>
             </form>
 
-            <div class="text-center pt-2">
-                <p class="text-gray-400">
-                    Already part of the network?
-                    <a routerLink="/login" class="text-nebula-cyan font-bold hover:text-nebula-blue transition-colors">
-                        Sign In
-                    </a>
+            <div class="text-center text-sm">
+                <p class="text-gray-500">
+                    Already a member? <a routerLink="/login" class="text-white font-bold hover:underline">Sign In</a>
                 </p>
             </div>
         </div>

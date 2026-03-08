@@ -1,7 +1,6 @@
-<div *ngIf="authService.isCheckingAuth(); else content" class="h-screen">
-  <div class="flex justify-center items-center bg-black h-full">
-    <lucide-icon [img]="Loader" class="animate-spin text-red-600 size-10"></lucide-icon>
-  </div>
+<div *ngIf="authService.isCheckingAuth(); else content"
+  class="h-screen bg-nebula-dark flex items-center justify-center">
+  <lucide-icon name="loader" class="animate-spin text-nebula-violet size-10"></lucide-icon>
 </div>
 
 <ng-template #content>
