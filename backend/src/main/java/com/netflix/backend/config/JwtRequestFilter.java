@@ -27,9 +27,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+        String path = request.getServletPath();
         String username = null;
         String jwt = null;
-
+        
+        if (path.startsWith("/api/v1/auth/")) {
+        chain.doFilter(request, response);
+        return;
+    }
+    
         // 1. Try to extract from Cookie
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
