@@ -39,9 +39,9 @@ public class JwtUtil {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = secret.getBytes();
-        // Or if secret is base64: Decoders.BASE64.decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
+      // This ensures we use the raw binary bytes of your 512-bit key
+       byte[] keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(secret);
+       return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private Claims getAllClaimsFromToken(String token) {

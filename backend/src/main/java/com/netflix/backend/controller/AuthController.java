@@ -42,15 +42,16 @@ public class AuthController {
     }
 
     private void setCookie(HttpServletResponse response, String token) {
-        Cookie cookie = new Cookie("jwt-netflix", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false); // Set to true if using HTTPS in production
-        cookie.setPath("/");
-        cookie.setMaxAge(15 * 24 * 60 * 60); // 15 days
-        // cookie.setSameSite("Strict"); // Java Servlet API might need custom header
-        // for SameSite if not supported directly
-        response.addCookie(cookie);
-    }
+    // We use a manual header because the standard Servlet Cookie API 
+    // doesn't support 'SameSite' attributes directly in older versions.
+    String cookieHeader = String.format(
+        "jwt-netflix=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=None",
+        token, 
+        15 * 24 * 60 * 60 // 15 days
+    );
+    
+    response.addHeader("Set-Cookie", cookieHeader);
+}
 
     private void clearCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie("jwt-netflix", "");
