@@ -1,15 +1,16 @@
 import { Component, ElementRef, Input, ViewChild, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../services/content.service';
-import { LucideAngularModule } from 'lucide-angular';
+import { LucideAngularModule, Play, ChevronLeft, ChevronRight, LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
 import { SMALL_IMG_BASE_URL, ORIGINAL_IMG_BASE_URL } from '../../constants';
 
 @Component({
     selector: 'app-movie-slider',
     standalone: true,
-    imports: [CommonModule, RouterLink, LucideAngularModule],
+    imports: [CommonModule, RouterLink, RouterLinkActive, LucideAngularModule],
+    providers: [{ provide: LUCIDE_ICONS, useValue: new LucideIconProvider({ Play, ChevronLeft, ChevronRight }) }],
     templateUrl: './movie-slider.component.html'
 })
 export class MovieSliderComponent {

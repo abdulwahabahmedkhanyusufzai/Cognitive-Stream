@@ -1,18 +1,18 @@
 import { Component, OnInit, inject, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { MovieSliderComponent } from '../../../components/movie-slider/movie-slider.component';
 import { ContentService } from '../../../services/content.service';
-import { LucideAngularModule, Play, Info, LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
+import { LucideAngularModule, Play, Info, Home, Compass, Clock, History, LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
 import { MOVIE_CATEGORIES, TV_CATEGORIES, ORIGINAL_IMG_BASE_URL } from '../../../constants';
 
 @Component({
     selector: 'app-home-screen',
     standalone: true,
-    imports: [CommonModule, RouterLink, NavbarComponent, MovieSliderComponent, LucideAngularModule],
-    providers: [{ provide: LUCIDE_ICONS, useValue: new LucideIconProvider({ Play, Info }) }],
+    imports: [CommonModule, RouterLink, RouterLinkActive, NavbarComponent, MovieSliderComponent, LucideAngularModule],
+    providers: [{ provide: LUCIDE_ICONS, useValue: new LucideIconProvider({ Play, Info, Home, Compass, Clock, History }) }],
     templateUrl: './home-screen.component.html'
 })
 export class HomeScreenComponent implements OnInit {
@@ -27,8 +27,6 @@ export class HomeScreenComponent implements OnInit {
     ORIGINAL_IMG_BASE_URL = ORIGINAL_IMG_BASE_URL;
 
     ngOnInit() {
-        // Subscribe to content type changes to re-fetch trending
-        // effect(() => this.getTrendingContent()) could work if inside injection context or constructor
     }
 
     constructor() {
@@ -41,14 +39,18 @@ export class HomeScreenComponent implements OnInit {
     getTrendingContent(type: string) {
         this.http.get<{ content: any }>(`/api/v1/${type}/trending`)
             .subscribe({
-                next: (res) => {
+                next: (res: { content: any }) => {
                     this.trendingContent.set(res.content);
                     this.imgLoading.set(true); // Reset loading for new image
                 },
-                error: (err) => {
+                error: (err: Error) => {
                     console.error("Failed to fetch trending content", err);
                     this.trendingContent.set(null); // Clear content or show error state
                 }
             });
+    }
+
+    setContentType(type: string) {
+        this.contentService.setContentType(type);
     }
 }
