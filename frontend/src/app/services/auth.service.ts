@@ -36,7 +36,7 @@ export class AuthService {
 
   signup(credentials: any): Observable<any> {
     this._isSigningUp.set(true);
-    return this.http.post<any>('/api/v1/auth/signup', credentials,{withCredentials: true}).pipe(
+    return this.http.post<any>('/api/v1/auth/signup', credentials).pipe(
       tap((response) => {
         this._user.set(response.user);
         this._isSigningUp.set(false);
@@ -53,7 +53,7 @@ export class AuthService {
 
   login(credentials: any): Observable<any> {
     this._isLoggingIn.set(true);
-    return this.http.post<any>('/api/v1/auth/login', credentials,{withCredentials: true}).pipe(
+    return this.http.post<any>('/api/v1/auth/login', credentials).pipe(
       tap((response) => {
         this._user.set(response.user);
         this._isLoggingIn.set(false);
@@ -70,7 +70,7 @@ export class AuthService {
 
   logout(): Observable<any> {
     this._isLoggingOut.set(true);
-    return this.http.post<any>('/api/v1/auth/logout', {}).pipe(
+    return this.http.post<any>('/api/v1/auth/logout', {},{withCredentials: true}).pipe(
       tap(() => {
         this._user.set(null);
         this._isLoggingOut.set(false);
