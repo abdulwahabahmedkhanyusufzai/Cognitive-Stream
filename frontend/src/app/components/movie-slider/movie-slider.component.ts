@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ContentService } from '../../services/content.service';
-import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
-import { SMALL_IMG_BASE_URL } from '../../constants';
+import { LucideAngularModule } from 'lucide-angular';
+import { SMALL_IMG_BASE_URL, ORIGINAL_IMG_BASE_URL } from '../../constants';
 
 @Component({
     selector: 'app-movie-slider',
     standalone: true,
-    imports: [CommonModule, RouterLink, LucideAngularModule], // Using LucideAngularModule directly or with .pick in app config if optimized
+    imports: [CommonModule, RouterLink, LucideAngularModule],
     templateUrl: './movie-slider.component.html'
 })
 export class MovieSliderComponent {
@@ -23,6 +23,7 @@ export class MovieSliderComponent {
     showArrows = signal(false);
 
     SMALL_IMG_BASE_URL = SMALL_IMG_BASE_URL;
+    ORIGINAL_IMG_BASE_URL = ORIGINAL_IMG_BASE_URL;
 
     constructor() {
         effect(() => {
@@ -35,7 +36,7 @@ export class MovieSliderComponent {
 
     getContent(contentType: string, category: string) {
         this.http.get<{ content: any[] }>(`/api/v1/${contentType}/${category}`)
-            .subscribe(res => {
+            .subscribe((res: { content: any[] }) => {
                 this.content.set(res.content);
             });
     }

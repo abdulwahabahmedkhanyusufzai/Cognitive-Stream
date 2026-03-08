@@ -1,41 +1,73 @@
-<div class="px-8 md:px-16" (mouseenter)="showArrows.set(true)" (mouseleave)="showArrows.set(false)">
-    <h2 class="text-sm font-black uppercase tracking-[0.4em] text-gray-600 mb-8 border-l-2 border-nebula-violet pl-4">
-        {{ categoryName }}
-    </h2>
+<div class="relative group" (mouseenter)="showArrows.set(true)" (mouseleave)="showArrows.set(false)">
 
-    <div class="relative group">
-        <div class="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 px-2" #sliderRef>
-            @for (item of content(); track item.id) {
-            <a [routerLink]="['/watch', item.id]"
-                class="min-w-[160px] md:min-w-[240px] relative transition-all duration-300 hover:scale-[1.02] active:scale-95 group/item">
+    <div class="flex overflow-x-auto no-scrollbar gap-5 pb-8 px-2" #sliderRef>
+        @for (item of content(); track item.id) {
+        <a [routerLink]="['/watch', item.id]"
+            class="min-w-[280px] md:min-w-[320px] group/card transition-all duration-300">
+
+            <!-- Thumbnail -->
+            <div
+                class="relative aspect-video rounded-xl overflow-hidden bg-nebula-surface border border-white/5 group-hover/card:border-nebula-violet/50 transition-all shadow-lg">
+                <img [src]="item.backdrop_path ? ORIGINAL_IMG_BASE_URL + item.backdrop_path : SMALL_IMG_BASE_URL + item.poster_path"
+                    [alt]="item.title || item.name"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110" />
+
+                <!-- Quality Badge -->
                 <div
-                    class="rounded-xl overflow-hidden border border-white/5 group-hover/item:border-white/20 transition-colors bg-white/5 aspect-[2/3]">
-                    <img [src]="SMALL_IMG_BASE_URL + item.poster_path" [alt]="item.title || item.name"
-                        class="w-full h-full object-cover transition-transform duration-500 group-hover/item:scale-105" />
+                    class="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/80 backdrop-blur-md rounded text-[9px] font-black text-white tracking-widest uppercase">
+                    4K Node
+                </div>
+
+                <!-- Play Overlay -->
+                <div
+                    class="absolute inset-0 bg-nebula-violet/20 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center">
                     <div
-                        class="absolute inset-0 bg-nebula-dark/60 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-4">
-                        <span
-                            class="text-[10px] font-black text-nebula-violet uppercase tracking-[0.2em] leading-tight bg-white px-2 py-1 rounded">
-                            {{ item.title || item.name }}
+                        class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-2xl scale-75 group-hover/card:scale-100 transition-transform duration-300">
+                        <lucide-icon name="play" class="size-6 text-black fill-current ml-1"></lucide-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Area -->
+            <div class="mt-4 flex gap-3">
+                <!-- Mini Avatar (Like YouTube Channel Icon) -->
+                <div
+                    class="w-9 h-9 rounded-full bg-gradient-premium flex-shrink-0 flex items-center justify-center text-[10px] font-black text-white shadow-lg">
+                    {{ item.vote_average.toFixed(1) }}
+                </div>
+
+                <div class="flex flex-col min-w-0">
+                    <h3
+                        class="text-white font-bold text-sm leading-tight truncate group-hover/card:text-nebula-violet transition-colors">
+                        {{ item.title || item.name }}
+                    </h3>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter">
+                            {{ (item.release_date || item.first_air_date)?.split('-')?.[0] }}
+                        </span>
+                        <span class="w-1 h-1 bg-gray-600 rounded-full"></span>
+                        <span class="text-[10px] font-black text-nebula-cyan uppercase tracking-widest">
+                            {{ item.vote_count }} Nodes
                         </span>
                     </div>
                 </div>
-            </a>
-            }
-        </div>
-
-        @if (showArrows()) {
-        <button
-            class="absolute top-1/2 -translate-y-1/2 -left-4 z-40 bg-nebula-dark text-white p-4 rounded-full border border-nebula-violet/30 hover:bg-nebula-violet shadow-lg shadow-nebula-violet/20 transition-all opacity-0 group-hover:opacity-100"
-            (click)="scrollLeft()">
-            <lucide-icon name="chevron-left" [size]="20"></lucide-icon>
-        </button>
-
-        <button
-            class="absolute top-1/2 -translate-y-1/2 -right-4 z-40 bg-nebula-dark text-white p-4 rounded-full border border-nebula-violet/30 hover:bg-nebula-violet shadow-lg shadow-nebula-violet/20 transition-all opacity-0 group-hover:opacity-100"
-            (click)="scrollRight()">
-            <lucide-icon name="chevron-right" [size]="20"></lucide-icon>
-        </button>
+            </div>
+        </a>
         }
     </div>
+
+    <!-- ARROWS (Integrated sleek) -->
+    @if (showArrows()) {
+    <button
+        class="absolute top-1/2 -left-4 -translate-y-12 z-40 w-12 h-12 rounded-full glass border border-white/10 text-white flex items-center justify-center hover:bg-white/10 hover:border-nebula-violet transition-all shadow-2xl opacity-0 group-hover:opacity-100"
+        (click)="scrollLeft()">
+        <lucide-icon name="chevron-left" [size]="24"></lucide-icon>
+    </button>
+
+    <button
+        class="absolute top-1/2 -right-4 -translate-y-12 z-40 w-12 h-12 rounded-full glass border border-white/10 text-white flex items-center justify-center hover:bg-white/10 hover:border-nebula-violet transition-all shadow-2xl opacity-0 group-hover:opacity-100"
+        (click)="scrollRight()">
+        <lucide-icon name="chevron-right" [size]="24"></lucide-icon>
+    </button>
+    }
 </div>

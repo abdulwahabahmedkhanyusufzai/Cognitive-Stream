@@ -6,29 +6,29 @@ import { Component } from '@angular/core';
   template: `
     <footer class="bg-nebula-dark border-t border-white/5 pt-24 pb-12 overflow-hidden relative">
       <!-- Background Bloom -->
-      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-nebula-violet/5 blur-[120px] rounded-full pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-nebula-violet/10 blur-[120px] rounded-full pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto px-8 relative z-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
           <!-- Column 1: Brand -->
           <div class="space-y-8">
             <div class="flex items-center space-x-4">
-              <div class="w-10 h-10 bg-nebula-violet rounded-xl flex items-center justify-center shadow-lg shadow-nebula-violet/20">
+              <div class="w-10 h-10 bg-gradient-premium rounded-xl flex items-center justify-center shadow-lg shadow-nebula-violet/20">
                 <span class="text-white font-black text-lg">C</span>
               </div>
               <div class="flex flex-col">
-                <span class="text-white font-black text-sm tracking-widest uppercase">Cognitive</span>
+                <span class="text-white font-black text-sm tracking-widest uppercase font-heading">Cognitive</span>
                 <span class="text-nebula-cyan font-bold text-[10px] tracking-[0.3em] uppercase">Stream</span>
               </div>
             </div>
-            <p class="text-gray-500 text-sm leading-relaxed font-medium">
+            <p class="text-gray-400 text-sm leading-relaxed font-medium">
               Architecting the next generation of neural content distribution. Synced across all nodes in the decentralized universe.
             </p>
           </div>
 
           <!-- Column 2: Navigation -->
           <div class="space-y-6">
-            <h4 class="text-white text-[11px] font-black uppercase tracking-[0.4em]">Sectors</h4>
+            <h4 class="text-white text-[11px] font-black uppercase tracking-[0.4em] font-heading">Sectors</h4>
             <nav class="flex flex-col space-y-4 text-[11px] font-bold uppercase tracking-widest text-gray-500">
               <a routerLink="/" class="hover:text-nebula-violet transition-colors">Movies Cluster</a>
               <a routerLink="/" class="hover:text-nebula-violet transition-colors">Universe Nodes</a>

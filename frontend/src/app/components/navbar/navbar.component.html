@@ -1,107 +1,108 @@
-<div class="fixed top-6 left-0 right-0 z-[100] px-4 md:px-8">
-  <header
-    class="max-w-7xl mx-auto flex items-center justify-between py-4 px-8 rounded-2xl backdrop-blur-2xl bg-black/40 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+<div class="fixed top-0 left-0 right-0 z-[100] border-b border-white/5 bg-nebula-dark/80 backdrop-blur-xl">
+  <div class="px-4 h-16 flex items-center justify-between gap-4 lg:gap-8">
 
-    <div class="flex items-center gap-12">
-      <a routerLink="/"
-        class="flex items-center space-x-3 group outline-none focus:ring-2 focus:ring-nebula-violet/50 rounded-lg">
-        <div class="relative">
-          <div
-            class="absolute -inset-1 bg-nebula-violet/30 rounded-lg blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
-          </div>
-          <div
-            class="relative w-9 h-9 bg-nebula-violet rounded-lg flex items-center justify-center shadow-lg shadow-nebula-violet/20">
-            <span class="text-white font-black text-xl">C</span>
-          </div>
+    <!-- LEFT: Logo & Brand -->
+    <div class="flex items-center gap-4 min-w-fit">
+      <button (click)="toggleMobileMenu()" class="p-2 hover:bg-white/5 rounded-full lg:hidden text-gray-400">
+        <lucide-icon name="menu" class="size-5"></lucide-icon>
+      </button>
+
+      <a routerLink="/" class="flex items-center space-x-2 group">
+        <div
+          class="w-8 h-8 bg-gradient-premium rounded-lg flex items-center justify-center shadow-lg shadow-nebula-violet/20">
+          <span class="text-white font-black text-lg">C</span>
         </div>
-        <div class="flex flex-col">
-          <span class="text-white font-black text-sm tracking-widest uppercase leading-none">Cognitive</span>
-          <span class="text-nebula-cyan font-bold text-[10px] tracking-[0.3em] uppercase mt-0.5">Stream</span>
+        <div class="hidden sm:flex flex-col">
+          <span class="text-white font-bold text-xs tracking-wider uppercase leading-none">Cognitive</span>
+          <span class="text-nebula-cyan font-bold text-[8px] tracking-[0.2em] uppercase mt-0.5">Stream</span>
         </div>
       </a>
-
-      <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center space-x-1">
-        <a routerLink="/"
-          class="px-5 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-all"
-          [routerLinkActive]="'!text-white !bg-nebula-violet/10'" [routerLinkActiveOptions]="{exact: true}"
-          (click)="setContentType('movie')">Movies</a>
-        <a routerLink="/"
-          class="px-5 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-all"
-          (click)="setContentType('tv')">Universe</a>
-        <a routerLink="/history"
-          class="px-5 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-white hover:bg-white/5 transition-all"
-          routerLinkActive="!text-white !bg-nebula-violet/10">Trajectory</a>
-      </nav>
     </div>
 
-    <div class="flex items-center gap-4">
+    <!-- CENTER: Search Bar (YouTube Style) -->
+    <div class="flex-grow max-w-2xl hidden md:flex items-center h-10">
       <div
-        class="hidden md:flex items-center bg-black/40 border border-white/5 rounded-xl px-4 py-2 group-focus-within:border-nebula-violet/50 transition-all">
-        <lucide-icon name="search" class="size-3.5 text-gray-500"></lucide-icon>
-        <a routerLink="/search"
-          class="ml-3 text-[10px] font-bold text-gray-500 uppercase tracking-widest hover:text-white transition-colors">Global
-          Search</a>
+        class="flex flex-grow bg-nebula-surface border border-nebula-border rounded-l-full overflow-hidden focus-within:border-nebula-violet transition-colors">
+        <input type="text" placeholder="Search for movies, actors, or nodes..."
+          class="w-full bg-transparent border-none text-white px-5 py-2 text-sm focus:ring-0 placeholder-gray-600"
+          routerLink="/search" />
+      </div>
+      <button routerLink="/search"
+        class="bg-nebula-border border border-l-0 border-nebula-border px-5 h-full rounded-r-full hover:bg-white/10 transition-colors text-gray-400">
+        <lucide-icon name="search" class="size-4"></lucide-icon>
+      </button>
+    </div>
+
+    <!-- RIGHT: Actions -->
+    <div class="flex items-center gap-2 sm:gap-4 min-w-fit">
+      <div class="md:hidden">
+        <button routerLink="/search" class="p-2 hover:bg-white/5 rounded-full text-gray-400">
+          <lucide-icon name="search" class="size-5"></lucide-icon>
+        </button>
       </div>
 
-      <div class="h-6 w-px bg-white/10 mx-2 hidden md:block"></div>
+      <div class="h-6 w-px bg-white/10 mx-2 hidden sm:block"></div>
 
-      <div class="flex items-center gap-4">
+      <!-- User Info -->
+      <div class="flex items-center gap-3">
+        <div class="hidden lg:flex flex-col items-end">
+          <span class="text-[10px] font-bold text-white leading-tight">{{ authService.user()?.username }}</span>
+          <span class="text-[9px] font-bold text-nebula-cyan tracking-tighter uppercase leading-tight">Elite Node</span>
+        </div>
+
         <div class="relative group/avatar cursor-pointer">
-          <div
-            class="absolute -inset-1 bg-nebula-violet/40 rounded-xl blur-md opacity-0 group-hover/avatar:opacity-100 transition-opacity">
-          </div>
           <img
             [src]="authService.user()?.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + authService.user()?.username"
             alt="Avatar"
-            class="relative h-10 w-10 rounded-xl object-cover border border-white/10 ring-1 ring-white/5" />
+            class="h-9 w-9 rounded-full object-cover border-2 border-nebula-border group-hover:border-nebula-violet transition-colors" />
         </div>
 
         <button (click)="logout()"
-          class="hidden sm:flex items-center justify-center p-2.5 rounded-xl bg-white/5 border border-white/5 text-gray-400 hover:text-red-400 hover:bg-red-400/10 hover:border-red-400/20 transition-all">
-          <lucide-icon name="log-out" class="size-4"></lucide-icon>
-        </button>
-      </div>
-
-      <div class="lg:hidden">
-        <button (click)="toggleMobileMenu()"
-          class="p-2.5 rounded-xl bg-nebula-violet/10 border border-nebula-violet/20 text-nebula-violet hover:bg-nebula-violet/20 transition-all">
-          <lucide-icon name="menu" class="size-5"></lucide-icon>
+          class="p-2 rounded-full hover:bg-white/5 text-gray-400 hover:text-red-400 transition-colors" title="Logout">
+          <lucide-icon name="log-out" class="size-5"></lucide-icon>
         </button>
       </div>
     </div>
-  </header>
+  </div>
+</div>
 
-  <!-- Mobile Menu Overlay -->
-  <div *ngIf="isMobileMenuOpen()"
-    class="absolute top-20 left-4 right-4 p-8 bg-black/95 backdrop-blur-3xl border border-white/10 rounded-[32px] shadow-2xl lg:hidden z-[101] animate-in slide-in-from-top-4 duration-300">
-    <nav class="flex flex-col space-y-4">
+<!-- Mobile Menu (The Sidebar style) -->
+<div *ngIf="isMobileMenuOpen()" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
+  (click)="toggleMobileMenu()">
+  <div
+    class="w-64 h-full bg-nebula-dark border-r border-white/5 p-4 flex flex-col gap-4 animate-in slide-in-from-left duration-300"
+    (click)="$event.stopPropagation()">
+    <div class="flex items-center gap-4 mb-8">
+      <button (click)="toggleMobileMenu()" class="p-2 hover:bg-white/5 rounded-full text-gray-400">
+        <lucide-icon name="menu" class="size-5"></lucide-icon>
+      </button>
+      <div class="flex items-center space-x-2">
+        <div class="w-7 h-7 bg-gradient-premium rounded-lg flex items-center justify-center">
+          <span class="text-white font-black text-sm">C</span>
+        </div>
+        <span class="text-white font-bold text-sm tracking-tight uppercase">Cognitive Stream</span>
+      </div>
+    </div>
+
+    <nav class="flex flex-col gap-1">
       <a routerLink="/"
-        class="flex items-center justify-between p-4 rounded-2xl bg-white/5 text-white font-black text-sm uppercase tracking-widest"
-        (click)="setContentType('movie'); toggleMobileMenu()">
-        <span>Movies</span>
-        <lucide-icon name="chevron-right" class="size-4 opacity-30"></lucide-icon>
+        class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all"
+        (click)="setContentType('movie'); toggleMobileMenu()" [routerLinkActive]="'!bg-nebula-violet/10 !text-white'">
+        <lucide-icon name="tv" class="size-5"></lucide-icon>
+        <span class="text-sm font-bold">Movies</span>
       </a>
       <a routerLink="/"
-        class="flex items-center justify-between p-4 rounded-2xl bg-white/5 text-white font-black text-sm uppercase tracking-widest"
-        (click)="setContentType('tv'); toggleMobileMenu()">
-        <span>Universe</span>
-        <lucide-icon name="chevron-right" class="size-4 opacity-30"></lucide-icon>
+        class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all"
+        (click)="setContentType('tv'); toggleMobileMenu()" [routerLinkActive]="'!bg-nebula-violet/10 !text-white'">
+        <lucide-icon name="star" class="size-5"></lucide-icon>
+        <span class="text-sm font-bold">Universe</span>
       </a>
       <a routerLink="/history"
-        class="flex items-center justify-between p-4 rounded-2xl bg-white/5 text-white font-black text-sm uppercase tracking-widest"
-        (click)="toggleMobileMenu()">
-        <span>Trajectory</span>
-        <lucide-icon name="chevron-right" class="size-4 opacity-30"></lucide-icon>
+        class="flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition-all"
+        (click)="toggleMobileMenu()" routerLinkActive="!bg-nebula-violet/10 !text-white">
+        <lucide-icon name="clock" class="size-5"></lucide-icon>
+        <span class="text-sm font-bold">Trajectory</span>
       </a>
-
-      <div class="pt-4 border-t border-white/5 flex flex-col space-y-4">
-        <a (click)="logout()"
-          class="flex items-center space-x-3 p-4 text-red-400 font-bold uppercase text-[10px] tracking-widest">
-          <lucide-icon name="log-out" class="size-4"></lucide-icon>
-          <span>Terminate Session</span>
-        </a>
-      </div>
     </nav>
   </div>
 </div>

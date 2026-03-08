@@ -8,22 +8,26 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+        heading: ['Outfit', 'sans-serif'],
+      },
       colors: {
         nebula: {
-          dark: '#020406',
-          violet: '#7C3AED',
-          cyan: '#06B6D4',
-          blue: '#2563EB',
-          deep: '#0F172A',
-        },
-        brand: {
-          DEFAULT: '#7C3AED',
-          light: '#8B5CF6',
-          dark: '#6D28D9',
+          dark: '#050505',
+          card: '#121212',
+          surface: '#1a1a1a',
+          violet: '#8B5CF6',
+          cyan: '#22D3EE',
+          fuchsia: '#D946EF',
+          muted: '#737373',
+          border: '#262626',
         }
       },
       backgroundImage: {
-        'sleek-dark': 'linear-gradient(to bottom, #020406, #0F172A)',
+        'gradient-premium': 'linear-gradient(135deg, #8B5CF6 0%, #D946EF 100%)',
+        'gradient-surface': 'linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%)',
+        'sleek-dark': 'linear-gradient(to bottom, #050505, #121212)',
       },
       backdropBlur: {
         xs: '2px',

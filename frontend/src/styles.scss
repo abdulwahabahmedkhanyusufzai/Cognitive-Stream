@@ -1,69 +1,99 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.hero-bg {
-	background-color: #020406;
-	background-image:
-		radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.12) 0px, transparent 60%),
-		radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
-		radial-gradient(at 80% 80%, rgba(124, 58, 237, 0.1) 0px, transparent 45%),
-		radial-gradient(at 20% 80%, rgba(6, 182, 212, 0.05) 0px, transparent 40%);
-	background-size: cover;
+:root {
+	--nebula-dark: #050505;
+	--nebula-surface: #121212;
+	--nebula-border: #262626;
+	--nebula-violet: #8B5CF6;
+	--nebula-cyan: #22D3EE;
 }
 
 body {
-	background-color: #020406;
-	background-image:
-		radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.03) 0px, transparent 50%),
-		radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.02) 0px, transparent 40%);
-	background-attachment: fixed;
-	color: #F8FAFC;
+	background-color: var(--nebula-dark);
+	color: #ffffff;
 	font-family: 'Inter', sans-serif;
 	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	overflow-x: hidden;
 }
 
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+	font-family: 'Outfit', sans-serif;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+	background: rgba(18, 18, 18, 0.7);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-vibrant {
+	background: rgba(139, 92, 246, 0.05);
+	backdrop-filter: blur(20px);
+	border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+/* Premium Animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--nebula-dark);
+}
+
+::-webkit-scrollbar-thumb {
+	background: #333;
+	border-radius: 10px;
+	border: 2px solid var(--nebula-dark);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #444;
+}
+
+/* Shimmer Effect for Loading States */
 .shimmer {
-	animation: shimmer 2s infinite linear;
-	background: linear-gradient(to right, #2c2c2c 4%, #333 25%, #2c2c2c 36%);
-	background-size: 1000px 100%;
+	background: linear-gradient(90deg,
+			rgba(255, 255, 255, 0) 0%,
+			rgba(255, 255, 255, 0.03) 50%,
+			rgba(255, 255, 255, 0) 100%);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s infinite;
 }
 
 @keyframes shimmer {
 	0% {
-		background-position: -1000px 0;
+		background-position: 200% 0;
 	}
 
 	100% {
-		background-position: 1000px 0;
+		background-position: -200% 0;
 	}
-}
-
-.error-page--content::before {
-	background: radial-gradient(ellipse at center,
-			rgba(0, 0, 0, 0.5) 0,
-			rgba(0, 0, 0, 0.2) 45%,
-			rgba(0, 0, 0, 0.1) 55%,
-			transparent 70%);
-	bottom: -10vw;
-	content: "";
-	left: 10vw;
-	position: absolute;
-	right: 10vw;
-	top: -10vw;
-	z-index: -1;
-}
-
-::-webkit-scrollbar {
-	width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-	background-color: #4b5563;
-	border-radius: 6px;
-}
-
-::-webkit-scrollbar-track {
-	background-color: #1a202c;
 }
