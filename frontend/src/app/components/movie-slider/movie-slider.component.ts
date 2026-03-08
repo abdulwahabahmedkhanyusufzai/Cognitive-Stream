@@ -40,12 +40,8 @@ export class MovieSliderComponent {
             });
     }
 
-    get formattedCategoryName() {
+    get categoryName() {
         return this.category.replaceAll("_", " ")[0].toUpperCase() + this.category.replaceAll("_", " ").slice(1);
-    }
-
-    get formattedContentType() {
-        return this.contentService.contentType() === "movie" ? "Movies" : "TV Shows";
     }
 
     scrollLeft() {
