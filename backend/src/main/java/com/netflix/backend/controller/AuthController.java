@@ -5,7 +5,6 @@ import com.netflix.backend.dto.AuthResponse;
 import com.netflix.backend.model.User;
 import com.netflix.backend.repository.UserRepository;
 import com.netflix.backend.service.AuthService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

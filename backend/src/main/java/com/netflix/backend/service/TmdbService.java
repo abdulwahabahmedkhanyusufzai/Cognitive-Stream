@@ -25,23 +25,37 @@ public class TmdbService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public Map<String, Object> fetchFromTmdb(String url) {
+    public Map<String, Object> fetchFromTmdb(String baseUrl) {
         try {
-            HttpRequest request = HttpRequest.newBuilder()
+            String url = baseUrl;
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .header("accept", "application/json");
+
+            // Check if we are using a v3 API Key (32 chars) or a v4 Read Access Token (long
+            // JWT)
+            if (tmdbApiKey != null && tmdbApiKey.length() <= 32) {
+                // v3 API Key style: append as query parameter
+                String separator = url.contains("?") ? "&" : "?";
+                url = url + separator + "api_key=" + tmdbApiKey;
+            } else if (tmdbApiKey != null) {
+                // v4 Read Access Token style: use Authorization header
+                requestBuilder.header("Authorization", "Bearer " + tmdbApiKey);
+            }
+
+            HttpRequest request = requestBuilder
                     .uri(URI.create(url))
-                    .header("accept", "application/json")
-                    .header("Authorization", "Bearer " + tmdbApiKey)
                     .GET()
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                // Handle 404 cleanly as per original logic
                 if (response.statusCode() == 404) {
                     return null;
                 }
-                throw new RuntimeException("Failed to fetch data from TMDB: " + response.statusCode());
+                // Log the fail but hide the key
+                throw new RuntimeException("Failed to fetch data from TMDB: " + response.statusCode() + " for URL: "
+                        + baseUrl.replaceAll("api_key=[^&]+", "api_key=***"));
             }
 
             return objectMapper.readValue(response.body(), Map.class);
