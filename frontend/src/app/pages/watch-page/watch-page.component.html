@@ -1,100 +1,156 @@
-<div class="bg-black min-h-screen text-white">
-    <div class="mx-auto container px-4 py-8 h-full">
-        <app-navbar></app-navbar>
+<div class="bg-nebula-dark min-h-screen text-white font-sans overflow-x-hidden">
+    <app-navbar></app-navbar>
 
+    <div class="max-w-7xl mx-auto px-6 py-12">
         @if (loading()) {
-        <div class="min-h-screen bg-black p-10 flex justify-center items-center">
-            <!-- Skeleton or simple loader -->
-            <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-red-500"></div>
+        <div class="h-[60vh] flex flex-col items-center justify-center space-y-6">
+            <div class="w-24 h-24 border-4 border-nebula-violet/20 border-t-nebula-cyan rounded-full animate-spin">
+            </div>
+            <p class="text-nebula-cyan font-bold tracking-widest animate-pulse">SYNCHRONIZING SIGNAL...</p>
         </div>
         } @else if (!content()) {
-        <div class="bg-black text-white h-screen">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mx-auto px-4 py-8 h-full mt-40">
-                    <h2 class="text-2xl sm:text-5xl font-bold text-balance">Content not found 😥</h2>
-                </div>
-            </div>
+        <div class="h-[60vh] flex flex-col items-center justify-center text-center">
+            <h2 class="text-5xl md:text-7xl font-black text-white/20 mb-4 tracking-tighter">DATA GAP</h2>
+            <p class="text-xl text-gray-500">The requested transmission could not be localized.</p>
         </div>
         } @else {
-        <!-- Trailers Navigation -->
-        @if (trailers().length > 0) {
-        <div class="flex justify-between items-center mb-4">
-            <button class="bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded"
-                [class.opacity-50]="currentTrailerIdx() === 0" [class.cursor-not-allowed]="currentTrailerIdx() === 0"
-                [disabled]="currentTrailerIdx() === 0" (click)="handlePrev()">
-                <lucide-icon name="chevron-left" [size]="24"></lucide-icon>
-            </button>
+        <!-- Content Header -->
+        <div class="mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <div class="space-y-4">
+                    <div
+                        class="inline-flex items-center space-x-2 px-3 py-1 bg-nebula-violet/20 border border-nebula-violet/30 rounded-lg">
+                        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-nebula-violet">Active
+                            Stream</span>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-black tracking-tighter leading-none">
+                        {{ content()?.title || content()?.name }}
+                    </h1>
+                    <div class="flex items-center space-x-4 text-sm font-bold text-gray-400">
+                        <span class="text-nebula-cyan">{{ (content()?.release_date || content()?.first_air_date) |
+                            date:'yyyy' }}</span>
+                        <span class="w-1.5 h-1.5 bg-gray-700 rounded-full"></span>
+                        <span class="px-2 py-0.5 rounded border border-white/10">{{ content()?.adult ? "18+ RESTRICTED"
+                            : "PG-13 OPEN" }}</span>
+                    </div>
+                </div>
 
-            <button class="bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded"
-                [class.opacity-50]="currentTrailerIdx() === trailers().length - 1"
-                [class.cursor-not-allowed]="currentTrailerIdx() === trailers().length - 1"
-                [disabled]="currentTrailerIdx() === trailers().length - 1" (click)="handleNext()">
-                <lucide-icon name="chevron-right" [size]="24"></lucide-icon>
-            </button>
+                @if (trailers().length > 1) {
+                <div
+                    class="flex items-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-1 shadow-2xl">
+                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all disabled:opacity-20"
+                        [disabled]="currentTrailerIdx() === 0" (click)="handlePrev()">
+                        <lucide-icon name="chevron-left" [size]="20"></lucide-icon>
+                    </button>
+                    <span class="px-4 text-xs font-black tracking-widest text-gray-500 uppercase">
+                        Signal {{currentTrailerIdx() + 1}} <span class="text-white/20">/</span> {{trailers().length}}
+                    </span>
+                    <button class="p-3 hover:bg-white/10 rounded-xl transition-all disabled:opacity-20"
+                        [disabled]="currentTrailerIdx() === trailers().length - 1" (click)="handleNext()">
+                        <lucide-icon name="chevron-right" [size]="20"></lucide-icon>
+                    </button>
+                </div>
+                }
+            </div>
         </div>
-        }
 
-        <!-- Video Player -->
-        <div class="aspect-video mb-8 p-2 sm:px-10 md:px-32">
+        <!-- Neural Display (Video Player) -->
+        <div
+            class="relative group rounded-[32px] overflow-hidden bg-black shadow-2xl border border-white/5 aspect-video mb-20 shadow-nebula-violet/10">
+            <div
+                class="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent pointer-events-none z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+            </div>
             @if (trailers().length > 0) {
-            <iframe [src]="getSafeUrl(trailers()[currentTrailerIdx()].key)"
-                class="w-full h-full rounded-lg overflow-hidden" frameborder="0" allowfullscreen
+            <iframe [src]="getSafeUrl(trailers()[currentTrailerIdx()].key)" class="w-full h-full" frameborder="0"
+                allowfullscreen
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
             </iframe>
             } @else {
-            <h2 class="text-xl text-center mt-5">
-                No trailers available for
-                <span class="font-bold text-red-600">{{ content()?.title || content()?.name }}</span> 😥
-            </h2>
+            <div class="w-full h-full flex flex-col items-center justify-center bg-nebula-dark/40 space-y-4">
+                <lucide-icon name="alert-circle" class="size-12 text-nebula-cyan opacity-50"></lucide-icon>
+                <h2 class="text-xl font-bold text-gray-400">No Visual Data Available</h2>
+            </div>
             }
         </div>
 
-        <!-- Details -->
-        <div class="flex flex-col md:flex-row items-center justify-between gap-20 max-w-6xl mx-auto">
-            <div class="mb-4 md:mb-0">
-                <h2 class="text-5xl font-bold text-balance">{{ content()?.title || content()?.name }}</h2>
+        <!-- Meta Information -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-32 items-start">
+            <div class="lg:col-span-2 space-y-8">
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black uppercase tracking-[0.3em] text-nebula-cyan">Transmission Summary</h3>
+                    <p class="text-xl md:text-2xl text-gray-300 leading-relaxed font-light">
+                        {{ content()?.overview }}
+                    </p>
+                </div>
 
-                <p class="mt-2 text-lg">
-                    {{ (content()?.release_date || content()?.first_air_date) | date:'longDate' }}
-                    |
-                    @if (content()?.adult) {
-                    <span class="text-red-600">18+</span>
-                    } @else {
-                    <span class="text-green-600">PG-13</span>
-                    }
-                </p>
-                <p class="mt-4 text-lg">{{ content()?.overview }}</p>
+                <div class="p-8 bg-white/5 border border-white/10 rounded-[32px] backdrop-blur-xl">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Status</p>
+                            <p class="font-bold text-nebula-cyan">Synchronized</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Rating</p>
+                            <p class="font-bold">{{content()?.vote_average}} / 10</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Popularity
+                            </p>
+                            <p class="font-bold">{{content()?.popularity?.toFixed(0)}}</p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-1">Language</p>
+                            <p class="font-bold uppercase">{{content()?.original_language}}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <img [src]="ORIGINAL_IMG_BASE_URL + content()?.poster_path" alt="Poster image"
-                class="max-h-[600px] rounded-md" />
+
+            <div class="relative group">
+                <div
+                    class="absolute -inset-1 bg-gradient-to-r from-nebula-violet to-nebula-cyan rounded-[40px] blur opacity-25 group-hover:opacity-50 transition duration-1000">
+                </div>
+                <img [src]="ORIGINAL_IMG_BASE_URL + content()?.poster_path" alt="Metadata poster"
+                    class="relative rounded-[40px] shadow-2xl border border-white/10 w-full" />
+            </div>
         </div>
 
-        <!-- Similar Content -->
+        <!-- Neighboring Signals (Similar Content) -->
         @if (similarContent().length > 0) {
-        <div class="mt-12 max-w-5xl mx-auto relative">
-            <h3 class="text-3xl font-bold mb-4">Similar Movies/Tv Show</h3>
-
-            <div class="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 group" #sliderRef>
-                @for (item of similarContent(); track item.id) {
-                @if (item.poster_path) {
-                <a [routerLink]="['/watch', item.id]" class="w-52 flex-none">
-                    <img [src]="SMALL_IMG_BASE_URL + item.poster_path" alt="Poster path"
-                        class="w-full h-auto rounded-md" />
-                    <h4 class="mt-2 text-lg font-semibold">{{ item.title || item.name }}</h4>
-                </a>
-                }
-                }
+        <div class="space-y-10">
+            <div class="flex items-center space-x-4">
+                <div class="h-8 w-1.5 bg-nebula-cyan rounded-full"></div>
+                <h3 class="text-3xl font-black tracking-tight uppercase">Similar <span
+                        class="text-nebula-cyan">Signals</span></h3>
             </div>
 
-            <lucide-icon name="chevron-right"
-                class="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600 text-white rounded-full"
-                (click)="scrollRight()">
-            </lucide-icon>
+            <div class="relative group/slider">
+                <div class="flex overflow-x-scroll scrollbar-hide gap-6 pb-12" #sliderRef>
+                    @for (item of similarContent(); track item.id) {
+                    @if (item.poster_path) {
+                    <a [routerLink]="['/watch', item.id]" class="w-56 flex-none group/item">
+                        <div
+                            class="relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/10 shadow-lg group-hover/item:scale-105 transition-all group-hover/item:border-nebula-violet/50">
+                            <img [src]="SMALL_IMG_BASE_URL + item.poster_path" alt="Similar visual"
+                                class="w-full h-full object-cover" />
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-nebula-dark to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity">
+                            </div>
+                        </div>
+                        <h4
+                            class="mt-4 text-sm font-bold text-gray-400 group-hover/item:text-white transition-colors truncate">
+                            {{ item.title || item.name }}</h4>
+                    </a>
+                    }
+                    }
+                </div>
 
-            <lucide-icon name="chevron-left"
-                class="absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600 text-white rounded-full"
-                (click)="scrollLeft()">
-            </lucide-icon>
+                <button
+                    class="absolute top-1/2 -translate-y-full right-0 p-3 bg-nebula-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl text-white opacity-0 group-hover/slider:opacity-100 hover:bg-nebula-violet transition-all"
+                    (click)="scrollRight()">
+                    <lucide-icon name="chevron-right" [size]="24"></lucide-icon>
+                </button>
+            </div>
         </div>
         }
         }
