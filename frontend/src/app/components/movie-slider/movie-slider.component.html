@@ -13,8 +13,9 @@
                     <img [src]="SMALL_IMG_BASE_URL + item.poster_path" [alt]="item.title || item.name"
                         class="w-full h-full object-cover transition-transform duration-500 group-hover/item:scale-105" />
                     <div
-                        class="absolute inset-0 bg-black/40 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-4">
-                        <span class="text-[10px] font-bold text-white uppercase tracking-widest leading-tight">
+                        class="absolute inset-0 bg-nebula-dark/60 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-4">
+                        <span
+                            class="text-[10px] font-black text-nebula-violet uppercase tracking-[0.2em] leading-tight bg-white px-2 py-1 rounded">
                             {{ item.title || item.name }}
                         </span>
                     </div>
@@ -25,13 +26,13 @@
 
         @if (showArrows()) {
         <button
-            class="absolute top-1/2 -translate-y-1/2 left-0 z-40 bg-black/80 text-white p-3 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"
+            class="absolute top-1/2 -translate-y-1/2 -left-4 z-40 bg-nebula-dark text-white p-4 rounded-full border border-nebula-violet/30 hover:bg-nebula-violet shadow-lg shadow-nebula-violet/20 transition-all opacity-0 group-hover:opacity-100"
             (click)="scrollLeft()">
             <lucide-icon name="chevron-left" [size]="20"></lucide-icon>
         </button>
 
         <button
-            class="absolute top-1/2 -translate-y-1/2 right-0 z-40 bg-black/80 text-white p-3 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"
+            class="absolute top-1/2 -translate-y-1/2 -right-4 z-40 bg-nebula-dark text-white p-4 rounded-full border border-nebula-violet/30 hover:bg-nebula-violet shadow-lg shadow-nebula-violet/20 transition-all opacity-0 group-hover:opacity-100"
             (click)="scrollRight()">
             <lucide-icon name="chevron-right" [size]="20"></lucide-icon>
         </button>
