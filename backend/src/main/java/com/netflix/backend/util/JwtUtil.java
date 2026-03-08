@@ -39,9 +39,14 @@ public class JwtUtil {
     }
 
     private Key getSignInKey() {
-      // This ensures we use the raw binary bytes of your 512-bit key
-       byte[] keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(secret);
-       return Keys.hmacShaKeyFor(keyBytes);
+        try {
+            // Try decoding as Base64 first
+            byte[] keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(secret);
+            return Keys.hmacShaKeyFor(keyBytes);
+        } catch (Exception e) {
+            // Fallback to raw bytes if not valid Base64
+            return Keys.hmacShaKeyFor(secret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        }
     }
 
     private Claims getAllClaimsFromToken(String token) {
@@ -59,9 +64,13 @@ public class JwtUtil {
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS512).compact();
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // Changed to HS256 for better compatibility
+                .compact();
     }
 
     public Boolean validateToken(String token, String username) {

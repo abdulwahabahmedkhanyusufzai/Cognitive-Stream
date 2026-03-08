@@ -27,15 +27,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        String path = request.getServletPath();
         String username = null;
         String jwt = null;
-        
-        if (path.startsWith("/api/v1/auth/")) {
-        chain.doFilter(request, response);
-        return;
-    }
-    
+
+        // The filter should process every request to extract the JWT if present.
+        // Specific endpoints are permitted/secured in SecurityConfig.java.
+
         // 1. Try to extract from Cookie
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
