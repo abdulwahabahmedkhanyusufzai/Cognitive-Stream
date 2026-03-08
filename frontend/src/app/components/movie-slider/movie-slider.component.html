@@ -1,48 +1,49 @@
 <div class="bg-transparent text-white relative px-5 md:px-20 group/slider" (mouseenter)="showArrows.set(true)"
     (mouseleave)="showArrows.set(false)">
 
-    <div class="flex items-center space-x-4 mb-6">
-        <div class="h-8 w-1.5 bg-nebula-cyan rounded-full"></div>
-        <h2 class="text-2xl font-black tracking-tight uppercase">
-            {{ formattedCategoryName }} <span class="text-nebula-cyan">{{ formattedContentType }}</span>
-        </h2>
-    </div>
+    <div class="px-8 md:px-16" (mouseenter)="showArrows.set(true)" (mouseleave)="showArrows.set(false)">
+        <h2
+            class="text-sm font-black uppercase tracking-[0.4em] text-gray-600 mb-8 border-l-2 border-nebula-violet pl-4">
+            {{ categoryName() }}</h2>
 
-    <div class="flex space-x-6 overflow-x-scroll scrollbar-hide pb-8" #sliderRef>
-        @for (item of content(); track item.id) {
-        <a [routerLink]="['/watch', item.id]" class="min-w-[280px] relative group overflow-visible pt-4">
-            <div
-                class="relative rounded-2xl overflow-hidden shadow-lg transition-all duration-500 group-hover:scale-[1.05] group-hover:shadow-nebula-violet/40 group-hover:shadow-2xl ring-1 ring-white/10 group-hover:ring-nebula-violet/50">
-                <img [src]="SMALL_IMG_BASE_URL + item.backdrop_path" alt="Stream item"
-                    class="w-full aspect-video object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
-                <div
-                    class="absolute inset-0 bg-gradient-to-t from-nebula-dark to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-                <div
-                    class="absolute bottom-4 left-4 right-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <button
-                        class="w-full py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-xs font-bold uppercase tracking-widest text-white hover:bg-white/20">
-                        Signal Detected
-                    </button>
-                </div>
+        <div class="relative group">
+            <div class="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 px-2" #sliderRef>
+                @for (item of content(); track item.id) {
+                <a [routerLink]="['/watch', item.id]"
+                    class="min-w-[160px] md:min-w-[240px] relative transition-all duration-300 hover:scale-[1.02] active:scale-95 group/item">
+                    <div
+                        class="rounded-xl overflow-hidden border border-white/5 group-hover/item:border-white/20 transition-colors bg-white/5 aspect-[2/3]">
+                        <img [src]="SMALL_IMG_BASE_URL + item.poster_path" [alt]="item.title || item.name"
+                            class="w-full h-full object-cover transition-transform duration-500 group-hover/item:scale-105" />
+                        <div
+                            class="absolute inset-0 bg-black/40 opacity-0 group-hover/item:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-[10px] font-bold text-white uppercase tracking-widest">{{ item.title ||
+                                item.name }}</span>
+                        </div>
+                    </div>
+                </a>
+                }
             </div>
-            <p class="mt-4 text-sm font-bold text-gray-400 group-hover:text-white transition-colors truncate px-2">{{
-                item.title || item.name }}</p>
-        </a>
+
+            @if (showArrows()) {
+            <button
+                class="absolute top-1/2 -translate-y-1/2 left-0 z-40 bg-black/80 text-white p-3 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"
+                (click)="scrollLeft()">
+                <lucide-icon name="chevron-left" [size]="20"></lucide-icon>
+            </button>
+
+            <button
+                class="absolute top-1/2 -translate-y-1/2 right-0 z-40 bg-black/80 text-white p-3 rounded-full border border-white/10 hover:bg-white hover:text-black transition-all"
+                (click)="scrollRight()">
+                <lucide-icon name="chevron-right" [size]="20"></lucide-icon>
+            </button>
+            }
+        </div>
+
+        <button
+            class="absolute top-1/2 -translate-y-1/2 right-4 md:right-10 flex items-center justify-center size-14 rounded-2xl bg-nebula-dark/60 backdrop-blur-xl border border-white/10 text-white z-10 hover:bg-nebula-violet/40 hover:scale-110 transition-all opacity-0 group-hover/slider:opacity-100 shadow-2xl"
+            (click)="scrollRight()">
+            <lucide-icon name="chevron-right" [size]="28"></lucide-icon>
+        </button>
         }
     </div>
-
-    @if (showArrows()) {
-    <button
-        class="absolute top-1/2 -translate-y-1/2 left-4 md:left-10 flex items-center justify-center size-14 rounded-2xl bg-nebula-dark/60 backdrop-blur-xl border border-white/10 text-white z-10 hover:bg-nebula-violet/40 hover:scale-110 transition-all opacity-0 group-hover/slider:opacity-100 shadow-2xl"
-        (click)="scrollLeft()">
-        <lucide-icon name="chevron-left" [size]="28"></lucide-icon>
-    </button>
-
-    <button
-        class="absolute top-1/2 -translate-y-1/2 right-4 md:right-10 flex items-center justify-center size-14 rounded-2xl bg-nebula-dark/60 backdrop-blur-xl border border-white/10 text-white z-10 hover:bg-nebula-violet/40 hover:scale-110 transition-all opacity-0 group-hover/slider:opacity-100 shadow-2xl"
-        (click)="scrollRight()">
-        <lucide-icon name="chevron-right" [size]="28"></lucide-icon>
-    </button>
-    }
-</div>
