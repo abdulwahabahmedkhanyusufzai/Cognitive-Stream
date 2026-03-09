@@ -4,77 +4,98 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.annotation.Nonnull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+/**
+ * Utility for generating and validating JSON Web Tokens (JWT).
+ * Follows Google Java Style: 2-space indentation and immutable configuration.
+ */
 @Component
 public class JwtUtil {
 
-    private String secret;
+  private static final Logger logger = LoggerFactory.getLogger(JwtUtil.class);
+  
+  private final String secret;
+  private final long expiration;
+  private final Key signInKey;
 
-    private long expiration;
+  // Explicit constructor for maximum traceability and immutability
+  public JwtUtil(
+      @Value("${jwt.secret}") String secret, 
+      @Value("${jwt.expiration}") long expiration) {
+    this.secret = secret;
+    this.expiration = expiration;
+    this.signInKey = initializeKey(secret);
+  }
 
-    public JwtUtil(@Value("${jwt.secret}") String secret, @Value("${jwt.expiration}") long expiration) {
-        this.secret = secret;
-        this.expiration = expiration;
+  @Nonnull
+  public String getUsernameFromToken(@Nonnull String token) {
+    return getClaimFromToken(token, Claims::getSubject);
+  }
+
+  @Nonnull
+  public Date getExpirationDateFromToken(@Nonnull String token) {
+    return getClaimFromToken(token, Claims::getExpiration);
+  }
+
+  public <T> T getClaimFromToken(@Nonnull String token, @Nonnull Function<Claims, T> claimsResolver) {
+    final Claims claims = getAllClaimsFromToken(token);
+    return claimsResolver.apply(claims);
+  }
+
+  public String generateToken(@Nonnull String username) {
+    Map<String, Object> claims = new HashMap<>();
+    return Jwts.builder()
+        .setClaims(claims)
+        .setSubject(username)
+        .setIssuedAt(new Date(System.currentTimeMillis()))
+        .setExpiration(new Date(System.currentTimeMillis() + expiration))
+        .signWith(signInKey, SignatureAlgorithm.HS256)
+        .compact();
+  }
+
+  public boolean validateToken(@Nonnull String token, @Nonnull String username) {
+    try {
+      final String tokenUsername = getUsernameFromToken(token);
+      return (tokenUsername.equals(username) && !isTokenExpired(token));
+    } catch (Exception e) {
+      logger.warn("Token validation failed: {}", e.getMessage());
+      return false;
     }
+  }
 
-    public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
-    }
+  private Claims getAllClaimsFromToken(String token) {
+    return Jwts.parserBuilder()
+        .setSigningKey(signInKey)
+        .build()
+        .parseClaimsJws(token)
+        .getBody();
+  }
 
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
+  private boolean isTokenExpired(String token) {
+    return getExpirationDateFromToken(token).before(new Date());
+  }
 
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
+  /**
+   * Initializes the signing key. Ensures the secret is sufficiently strong.
+   */
+  private Key initializeKey(String secret) {
+    try {
+      byte[] keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(secret);
+      return Keys.hmacShaKeyFor(keyBytes);
+    } catch (Exception e) {
+      logger.debug("Secret is not Base64 encoded, falling back to raw bytes.");
+      return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
-
-    private Key getSignInKey() {
-        try {
-            // Try decoding as Base64 first
-            byte[] keyBytes = io.jsonwebtoken.io.Decoders.BASE64.decode(secret);
-            return Keys.hmacShaKeyFor(keyBytes);
-        } catch (Exception e) {
-            // Fallback to raw bytes if not valid Base64
-            return Keys.hmacShaKeyFor(secret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        }
-    }
-
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
-    public String generateToken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, username);
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // Changed to HS256 for better compatibility
-                .compact();
-    }
-
-    public Boolean validateToken(String token, String username) {
-        final String tokenUsername = getUsernameFromToken(token);
-        return (tokenUsername.equals(username) && !isTokenExpired(token));
-    }
+  }
 }

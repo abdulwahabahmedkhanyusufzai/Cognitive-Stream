@@ -11,6 +11,10 @@ import { LucideAngularModule, Play, Pause, Volume2, VolumeX, Maximize, Settings,
     <div class="relative group aspect-video bg-black rounded-[32px] overflow-hidden border border-white/5 shadow-2xl" #containerRef>
       <video
         #videoRef
+        (play)="isPlaying.set(true)"
+        (pause)="isPlaying.set(false)"
+        (waiting)="isBuffering.set(true)"
+        (playing)="isBuffering.set(false)"
         class="w-full h-full object-contain cursor-pointer"
         (click)="togglePlay()"
         (timeupdate)="onTimeUpdate()"
@@ -115,7 +119,8 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
     @Input({ required: true }) src: string = '';
     @ViewChild('videoRef') videoRef!: ElementRef<HTMLVideoElement>;
     @ViewChild('containerRef') containerRef!: ElementRef<HTMLDivElement>;
-
+    
+    
     private hls?: Hls;
 
     // State Signals
@@ -178,13 +183,7 @@ export class VideoPlayerComponent implements OnChanges, OnDestroy, AfterViewInit
 
     togglePlay() {
         const video = this.videoRef.nativeElement;
-        if (video.paused) {
-            video.play();
-            this.isPlaying.set(true);
-        } else {
-            video.pause();
-            this.isPlaying.set(false);
-        }
+        video.paused ? video.play() : video.pause();
     }
 
     toggleMute() {

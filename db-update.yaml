@@ -1,0 +1,19 @@
+properties:
+  template:
+    containers:
+      - image: postgres:latest
+        name: ba-db
+        env:
+          - name: POSTGRES_USER
+            value: "postgres"
+          - name: POSTGRES_PASSWORD
+            value: "postgres"
+          - name: POSTGRES_DB
+            value: "netflix_db"
+        volumeMounts:
+          - volumeName: pg-data-volume
+            mountPath: /var/lib/postgresql/data
+    volumes:
+      - name: pg-data-volume
+        storageName: pg-storage
+        storageType: AzureFile

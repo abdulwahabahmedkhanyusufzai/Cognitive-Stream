@@ -8,6 +8,8 @@ import { VideoPlayerComponent } from '../../components/video-player/video-player
 import { ContentService } from '../../services/content.service';
 import { LucideAngularModule, ChevronLeft, ChevronRight, AlertCircle, LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
 import { ORIGINAL_IMG_BASE_URL, SMALL_IMG_BASE_URL } from '../../constants';
+import { VideoService } from '../../services/video.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-watch-page',
@@ -18,9 +20,9 @@ import { ORIGINAL_IMG_BASE_URL, SMALL_IMG_BASE_URL } from '../../constants';
 })
 export class WatchPageComponent implements OnInit {
     private route = inject(ActivatedRoute);
-    private http = inject(HttpClient);
     public contentService = inject(ContentService);
     private sanitizer = inject(DomSanitizer);
+    private videoService = inject(VideoService);
 
     @ViewChild('sliderRef') sliderRef!: ElementRef<HTMLDivElement>;
 
@@ -46,44 +48,31 @@ export class WatchPageComponent implements OnInit {
         });
     }
 
-    loadData(id: string) {
+  loadData(id: string) {
         const type = this.contentService.contentType();
         this.loading.set(true);
 
-        // Trailers
-        this.http.get<{ trailers: any[] }>(`/api/v1/${type}/${id}/trailers`)
-            .subscribe({
-                next: (res: { trailers: any[] }) => this.trailers.set(res.trailers),
-                error: () => this.trailers.set([])
-            });
-
-        // Similar
-        this.http.get<{ similar: any[] }>(`/api/v1/${type}/${id}/similar`)
-            .subscribe({
-                next: (res: { similar: any[] }) => this.similarContent.set(res.similar),
-                error: () => this.similarContent.set([])
-            });
-
-        // Details
-        this.http.get<{ content: any }>(`/api/v1/${type}/${id}/details`)
-            .subscribe({
-                next: (res: { content: any }) => {
-                    this.content.set(res.content);
-                    this.loading.set(false);
-                },
-                error: (err: Error) => {
-                    console.error("Failed to fetch details", err);
-                    this.content.set(null);
-                    this.loading.set(false);
-                }
-            });
-
-        // HLS Stream from CDN
-        this.http.get<{ url: string }>(`/api/v1/stream/${type}/${id}`)
-            .subscribe({
-                next: (res: { url: string }) => this.streamUrl.set(res.url),
-                error: () => this.streamUrl.set(null)
-            });
+        // Using VideoService methods instead of raw http.get
+        forkJoin({
+            trailers: this.videoService.getTrailers(type, id),
+            similar: this.videoService.getSimilar(type, id),
+            details: this.videoService.getDetails(type, id),
+            stream: this.videoService.getStreamUrl(type, id)
+        }).subscribe({
+            next: (res) => {
+                // Mapping data from the service responses
+                this.trailers.set(res.trailers.trailers || res.trailers);
+                this.similarContent.set(res.similar.similar || res.similar);
+                this.content.set(res.details.content || res.details);
+                this.streamUrl.set(res.stream.url);
+                this.loading.set(false);
+            },
+            error: (err) => {
+                console.error("Signal integrity compromised", err);
+                this.loading.set(false);
+                this.content.set(null);
+            }
+        });
     }
 
     toggleSource() {
